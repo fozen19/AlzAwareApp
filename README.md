@@ -1,1 +1,1 @@
-# AlzAwareApp
+# AlzAwareApp Initilization
