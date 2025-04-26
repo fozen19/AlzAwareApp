@@ -1,13 +1,12 @@
 package com.example.alzawaremobile.models
 
-data class AuthResponse(
-    val token: String,
-    val id: Long,
+
+data class SignupRequest(
     val username: String,
     val email: String,
+    val password: String,
     val firstName: String,
     val lastName: String,
-    val phoneNumber: String,
-    val roles: List<String>
+    val phoneNumber: String?,
+    val role: Set<String>?
 )
-

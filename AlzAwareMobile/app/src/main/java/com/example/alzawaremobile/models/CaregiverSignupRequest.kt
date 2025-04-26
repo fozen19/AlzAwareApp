@@ -1,7 +1,0 @@
-package com.example.alzawaremobile.models
-
-data class CaregiverSignupRequest(
-    val name: String,
-    val email: String,
-    val password: String
-)

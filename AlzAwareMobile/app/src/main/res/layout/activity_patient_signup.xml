@@ -11,15 +11,28 @@
         android:gravity="center"
         android:padding="24dp">
 
+        <!-- Başlık -->
+        <TextView
+            android:id="@+id/tvSignupTitle"
+            android:text="Hasta Kayıt"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="32dp"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Kullanıcı adı -->
         <EditText
             android:id="@+id/etName"
-            android:hint="Ad Soyad"
+            android:hint="Kullanıcı Adı"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
             android:padding="12dp"
             android:layout_marginBottom="12dp" />
 
+        <!-- Email -->
         <EditText
             android:id="@+id/etEmail"
             android:hint="Email"
@@ -30,6 +43,7 @@
             android:padding="12dp"
             android:layout_marginBottom="12dp" />
 
+        <!-- Şifre -->
         <EditText
             android:id="@+id/etPassword"
             android:hint="Şifre"
@@ -40,30 +54,58 @@
             android:padding="12dp"
             android:layout_marginBottom="12dp" />
 
+        <!-- Ad -->
         <EditText
-            android:id="@+id/etCaregiverId"
-            android:hint="Bakıcı ID"
+            android:id="@+id/etFirstName"
+            android:hint="Ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Soyad -->
+        <EditText
+            android:id="@+id/etLastName"
+            android:hint="Soyad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Telefon numarası -->
+        <EditText
+            android:id="@+id/etPhoneNumber"
+            android:hint="Telefon Numarası"
+            android:inputType="phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
             android:padding="12dp"
             android:layout_marginBottom="24dp" />
 
+        <!-- Kayıt Ol Butonu -->
         <Button
             android:id="@+id/btnSignup"
             android:text="Kayıt Ol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
 
+        <!-- Girişe Git Linki -->
         <TextView
             android:id="@+id/tvGoToLogin"
             android:text="Zaten hesabın var mı? Giriş Yap"
             android:textColor="@android:color/holo_blue_dark"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center" />
-
 
     </LinearLayout>
 </ScrollView>

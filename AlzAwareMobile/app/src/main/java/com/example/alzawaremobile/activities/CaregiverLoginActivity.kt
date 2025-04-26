@@ -17,21 +17,29 @@ class CaregiverLoginActivity : AppCompatActivity() {
         binding = ActivityCaregiverLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Başlıkları ayarla
+        binding.tvLoginTitle.text = "Bakıcı Girişi"
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
-//            viewModel.login(
-//                email, password, role = "caregiver", // ✅ rol parametresi eklendi
-//                onSuccess = {
-//                    startActivity(Intent(this, CaregiverHomeActivity::class.java))
-//                    finish()
-//                },
-//                onError = {
-//                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-//                })
+            if (email.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Email ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            startActivity(Intent(this, CaregiverHomeActivity::class.java))
+            // ✅ Şimdi doğru şekilde giriş yapıyoruz:
+            viewModel.login(
+                email, password, role = "caregiver",
+                onSuccess = {
+                    startActivity(Intent(this, CaregiverHomeActivity::class.java))
+                    finish()
+                },
+                onError = {
+                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
         binding.tvGoToSignup.setOnClickListener {
@@ -42,6 +50,5 @@ class CaregiverLoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RoleSelectionActivity::class.java))
             finish()
         }
-
     }
 }

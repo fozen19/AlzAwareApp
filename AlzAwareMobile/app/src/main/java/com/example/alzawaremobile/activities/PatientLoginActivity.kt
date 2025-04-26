@@ -17,11 +17,20 @@ class PatientLoginActivity : AppCompatActivity() {
         binding = ActivityPatientLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Başlığı ayarlayalım
+
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
 
-            viewModel.login(email, password,role = "caregiver",
+            // 🎯 Boş alan kontrolü
+            if (email.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Email ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // ✅ Burada doğru role gönderiyoruz artık: patient
+            viewModel.login(email, password, role = "patient",
                 onSuccess = {
                     startActivity(Intent(this, PatientHomeActivity::class.java))
                     finish()
@@ -39,6 +48,5 @@ class PatientLoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RoleSelectionActivity::class.java))
             finish()
         }
-
     }
 }

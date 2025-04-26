@@ -6,22 +6,25 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val BASE_URL = "https://your-backend-url.com/" // ← kendi backend URL’ini yaz
 
-    // Token'lı Retrofit oluştur
+    private const val BASE_URL = "http://10.0.2.2:8080/" // Emülatör için
+    // Gerçek cihazdaysan kendi IP adresini kullanacaksın
+
     private fun getRetrofit(token: String? = null): Retrofit {
-        val logger = HttpLoggingInterceptor().apply {
+        val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
         val client = OkHttpClient.Builder()
-            .addInterceptor(logger)
+            .addInterceptor(logging)
             .addInterceptor { chain ->
-                val requestBuilder = chain.request().newBuilder()
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
                 if (!token.isNullOrEmpty()) {
                     requestBuilder.addHeader("Authorization", "Bearer $token")
                 }
-                chain.proceed(requestBuilder.build())
+                val request = requestBuilder.build()
+                chain.proceed(request)
             }
             .build()
 
@@ -32,13 +35,11 @@ object ApiClient {
             .build()
     }
 
-    // Token'sız varsayılan kullanım
     val apiService: ApiService by lazy {
         getRetrofit().create(ApiService::class.java)
     }
 
-    // Token'lı API servisi
-    fun getApiService(token: String? = null): ApiService {
+    fun getApiService(token: String): ApiService {
         return getRetrofit(token).create(ApiService::class.java)
     }
 }

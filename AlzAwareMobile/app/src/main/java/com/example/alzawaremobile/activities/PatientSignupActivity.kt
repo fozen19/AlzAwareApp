@@ -17,20 +17,39 @@ class PatientSignupActivity : AppCompatActivity() {
         binding = ActivityPatientSignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Başlık dinamik ayarlansın
+        binding.tvSignupTitle.text = "Hasta Kayıt"
+
         binding.btnSignup.setOnClickListener {
-            val name = binding.etName.text.toString()
+            val username = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
-            val caregiverId = binding.etCaregiverId.text.toString()
+            val firstName = binding.etFirstName.text.toString()
+            val lastName = binding.etLastName.text.toString()
+            val phoneNumber = binding.etPhoneNumber.text.toString()
 
-            viewModel.signupPatient(name, email, password, caregiverId,
+            // 🎯 Boş alan kontrolü
+            if (username.isBlank() || email.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Lütfen tüm zorunlu alanları doldurun.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            viewModel.signup(
+                username = username,
+                email = email,
+                password = password,
+                firstName = firstName,
+                lastName = lastName,
+                phoneNumber = phoneNumber.ifEmpty { null },
+                role = "patient",
                 onSuccess = {
                     startActivity(Intent(this, PatientHomeActivity::class.java))
                     finish()
                 },
                 onError = {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                })
+                }
+            )
         }
 
         binding.tvGoToLogin.setOnClickListener {

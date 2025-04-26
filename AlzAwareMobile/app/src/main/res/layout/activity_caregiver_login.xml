@@ -2,23 +2,30 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
         android:padding="24dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
+
+
+        <!-- Alt Başlık -->
         <TextView
-            android:text="Giriş Yap"
-            android:textSize="24sp"
+            android:id="@+id/tvLoginTitle"
+            android:text="Bakıcı Girişi"
+            android:textSize="28sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="32dp"
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <!-- Email -->
         <EditText
             android:id="@+id/etEmail"
             android:hint="Email"
@@ -26,9 +33,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
-            android:padding="12dp"
+            android:padding="14dp"
             android:layout_marginBottom="16dp" />
 
+        <!-- Şifre -->
         <EditText
             android:id="@+id/etPassword"
             android:hint="Şifre"
@@ -36,27 +44,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
-            android:padding="12dp"
+            android:padding="14dp"
             android:layout_marginBottom="24dp" />
 
+        <!-- Giriş Yap Butonu -->
         <Button
             android:id="@+id/btnLogin"
             android:text="GİRİŞ YAP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/holo_purple"
+            android:backgroundTint="@android:color/holo_green_light"
             android:textColor="@android:color/white"
-            android:layout_marginBottom="20dp" />
+            android:padding="14dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
 
+        <!-- Kayıt Ol Linki -->
         <TextView
             android:id="@+id/tvGoToSignup"
             android:text="Hesabın yok mu? Kayıt Ol"
-            android:textColor="@android:color/holo_blue_dark"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp"
+            android:textColor="@android:color/holo_blue_dark"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
 
+        <!-- Rol Seçimine Dön Linki -->
         <TextView
             android:id="@+id/tvGoToRoleSelection"
             android:text="← Rol seçimine dön"
@@ -64,5 +77,6 @@
             android:textColor="@android:color/holo_blue_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 </ScrollView>
