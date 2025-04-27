@@ -7,8 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "http://10.0.2.2:8080/" // Emülatör için
-    // Gerçek cihazdaysan kendi IP adresini kullanacaksın
+    private const val BASE_URL = "http://172.21.232.195:8080/"
+    // Kendi cihaz IP'ni yazman gerekiyor.
 
     private fun getRetrofit(token: String? = null): Retrofit {
         val logging = HttpLoggingInterceptor().apply {
