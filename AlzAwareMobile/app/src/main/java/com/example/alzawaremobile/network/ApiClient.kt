@@ -1,5 +1,6 @@
 package com.example.alzawaremobile.network
 
+import com.example.alzawaremobile.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -7,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "http://172.21.232.195:8080/"
+    private const val BASE_URL = "https://api.example.com/" //kendi ip adresinizi yazın.
     // Kendi cihaz IP'ni yazman gerekiyor.
 
     private fun getRetrofit(token: String? = null): Retrofit {

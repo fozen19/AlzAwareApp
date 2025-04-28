@@ -8,6 +8,7 @@ android {
     compileSdk = 35
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     defaultConfig {
         applicationId = "com.example.alzawaremobile"
@@ -26,7 +27,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "MAPS_API_KEY", "\"${System.getenv("MAPS_API_KEY")}\"")
         }
+        debug {
+            buildConfigField("String", "MAPS_API_KEY", "\"${System.getenv("MAPS_API_KEY")}\"")
+        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -61,6 +67,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-
+    implementation(libs.play.services.maps.v1820)
 
 }
