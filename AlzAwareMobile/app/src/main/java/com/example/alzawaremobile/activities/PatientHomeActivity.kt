@@ -12,6 +12,5 @@ class PatientHomeActivity : AppCompatActivity() {
         binding = ActivityPatientHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvWelcome.text = "Hoş geldiniz, Hasta!"
     }
 }

@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private const val BASE_URL = "http://172.21.232.195:8080/"
+    private const val BASE_URL = "http://172.21.191.237:8080/"
     // Kendi cihaz IP'ni yazman gerekiyor.
 
     private fun getRetrofit(token: String? = null): Retrofit {

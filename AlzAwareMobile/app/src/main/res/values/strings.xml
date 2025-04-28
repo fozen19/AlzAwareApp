@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AlzAwareMobile</string>
+    <string name="medication_icon">Medication</string>
+    <string name="home_icon">Home</string>
+    <string name="location_icon">Map</string>
+    <string name="edit_option">Edit</string>
+    <string name="delete_option">Delete</string>
 </resources>

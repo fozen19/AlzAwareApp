@@ -2,7 +2,7 @@
 
 # PostgreSQL credentials
 PG_USER="postgres"
-PG_PASSWORD="postgres"
+PG_PASSWORD="1Catal:Kasik"
 DB_NAME="alzaware_db"
 
 echo "Creating AlzAware database..."
