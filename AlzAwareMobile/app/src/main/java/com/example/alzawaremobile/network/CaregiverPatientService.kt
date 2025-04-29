@@ -1,16 +1,13 @@
 package com.example.alzawaremobile.network
 
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface CaregiverPatientService {
-
-    @POST("api/caregiver-patient/assign")
-    @FormUrlEncoded
+    @POST("caregivers/{caregiverId}/patients/{patientId}") // Replace with your actual endpoint
     fun assignPatientToCaregiver(
-        @Field("caregiverId") caregiverId: Long,
-        @Field("patientId") patientId: Long
+        @Path("caregiverId") caregiverId: Long,
+        @Path("patientId") patientId: Long
     ): Call<Void>
 }
