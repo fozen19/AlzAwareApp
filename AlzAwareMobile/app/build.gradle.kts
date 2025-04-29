@@ -62,6 +62,14 @@ dependencies {
     //
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
+    // Retrofit for network calls
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+// Gson converter for Retrofit
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+// (Optional) OkHttp Logging Interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
