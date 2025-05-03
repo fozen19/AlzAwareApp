@@ -42,4 +42,15 @@
         app:layout_constraintStart_toStartOf="@+id/settingsButton"
         app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
 
+    <!-- Logout Button (Always Visible) -->
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/settingsButton"
+        app:layout_constraintStart_toStartOf="@+id/settingsButton"
+        app:layout_constraintTop_toBottomOf="@+id/addPatientButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.semantics.text
 import androidx.glance.visibility
+import android.content.Intent
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,7 +17,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.alzawaremobile.R
+import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
 import com.example.alzawaremobile.network.ApiClient
+import com.example.alzawaremobile.network.ApiService
 import com.example.alzawaremobile.network.CaregiverPatientService
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,15 +29,21 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var settingsButton: ImageButton
     private lateinit var addPatientButton: Button
+    private lateinit var logoutButton: Button
     private lateinit var map: GoogleMap
+    private var caregiverId: Long = -1L
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_caregiver_home)
 
         // Initialize UI elements
+        caregiverId = intent.getLongExtra("caregiverId", -1L)
+
         settingsButton = findViewById(R.id.settingsButton)
         addPatientButton = findViewById(R.id.addPatientButton)
+        logoutButton = findViewById(R.id.logoutButton)
 
         // Set click listeners
         settingsButton.setOnClickListener {
@@ -44,6 +53,14 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             showAddPatientDialog()
         }
 
+        // Logout: go back to RoleSelectionActivity
+        logoutButton.setOnClickListener {
+            val intent = Intent(this, RoleSelectionActivity::class.java)
+            // Clear back stack so user can't navigate back
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
         // Get the SupportMapFragment and request the map.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -80,10 +97,13 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun assignPatientToCaregiver(patientId: Long) {
-        val caregiverId = getCurrentUserId() // Your logic to get logged-in caregiver ID
-
-        val service = ApiClient.retrofit.create(CaregiverPatientService::class.java)
-        val call = service.assignPatientToCaregiver(caregiverId, patientId)
+        if (caregiverId < 0) {
+            Toast.makeText(this, "Error: caregiverId not provided", Toast.LENGTH_LONG).show()
+            return
+        }
+        val service = ApiClient.retrofit.create(ApiService::class.java)
+        val body = CaregiverPatientMatchRequest(caregiverId, patientId)
+        val call = service.assignPatientToCaregiver(body)
 
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {

@@ -32,12 +32,14 @@ class CaregiverLoginActivity : AppCompatActivity() {
             // ✅ Şimdi doğru şekilde giriş yapıyoruz:
             viewModel.login(
                 email, password, role = "caregiver",
-                onSuccess = {
-                    startActivity(Intent(this, CaregiverHomeActivity::class.java))
+                onSuccess = { userId ->
+                    val intent = Intent(this, CaregiverHomeActivity::class.java)
+                    intent.putExtra("caregiverId", userId)
+                    startActivity(intent)
                     finish()
                 },
-                onError = {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                onError = { errorMessage ->
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
         }

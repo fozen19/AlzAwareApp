@@ -48,7 +48,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         username: String,
         password: String,
         role: String,
-        onSuccess: () -> Unit,
+        onSuccess: (Long) -> Unit,
         onError: (String) -> Unit
     ) {
         val request = LoginRequest(
@@ -61,7 +61,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 if (authResponse.token.isNotEmpty()) {
                     TokenManager.saveToken(context, authResponse.token)
                     TokenManager.saveUserRole(context, role)
-                    onSuccess()
+                    TokenManager.saveUserId(context, authResponse.id)
+                    onSuccess(authResponse.id)
                 } else {
                     onError("Geçersiz token alındı")
                 }
