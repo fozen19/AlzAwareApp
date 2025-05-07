@@ -1,13 +1,13 @@
 package AlzAware.AlzAware_App.payload.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class CaregiverPatientMatchRequest {
-    @NotBlank
+    @NotNull
     private Long caregiverId;
 
-    @NotBlank
+    @NotNull
     private Long patientId;
 }

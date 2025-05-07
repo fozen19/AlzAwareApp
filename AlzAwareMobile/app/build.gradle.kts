@@ -97,4 +97,7 @@ dependencies {
 
     implementation(libs.play.services.maps.v1820)
 
+    implementation(libs.material.v1110) // TabLayout için
+    implementation(libs.androidx.viewpager2)       // ViewPager2 için
+
 }

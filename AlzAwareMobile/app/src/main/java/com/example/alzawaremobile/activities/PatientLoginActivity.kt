@@ -20,17 +20,17 @@ class PatientLoginActivity : AppCompatActivity() {
         // Başlığı ayarlayalım
 
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString()
+            val userName = binding.etUserName.text.toString()
             val password = binding.etPassword.text.toString()
 
             // 🎯 Boş alan kontrolü
-            if (email.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Email ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
+            if (userName.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Kullanıcı adı ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             // ✅ Burada doğru role gönderiyoruz artık: patient
-            viewModel.login(email, password, role = "patient",
+            viewModel.login(userName, password, role = "patient",
                 onSuccess = {
                     startActivity(Intent(this, PatientHomeActivity::class.java))
                     finish()

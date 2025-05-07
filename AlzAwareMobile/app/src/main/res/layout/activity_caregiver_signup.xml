@@ -24,7 +24,7 @@
 
         <!-- Kullanıcı Adı -->
         <EditText
-            android:id="@+id/etName"
+            android:id="@+id/etUserName"
             android:hint="Kullanıcı Adı"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

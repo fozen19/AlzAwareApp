@@ -5,9 +5,12 @@ import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
 import com.example.alzawaremobile.models.LoginRequest
 import com.example.alzawaremobile.models.MessageResponse
 import com.example.alzawaremobile.models.SignupRequest
+import com.example.alzawaremobile.models.User
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @POST("api/auth/login")
@@ -16,6 +19,14 @@ interface ApiService {
     @POST("api/auth/signup")
     fun signup(@Body request: SignupRequest): Call<MessageResponse>
 
-    @POST("api/caregiver-patient/assign") // Replace with your actual endpoint
-    fun assignPatientToCaregiver(@Body request: CaregiverPatientMatchRequest): Call<Void>
+    @POST("api/caregiver-patient/assign")
+    fun assignPatientToCaregiver(
+        @Body request: CaregiverPatientMatchRequest
+    ): Call<MessageResponse>
+
+    @GET("api/caregiver-patient/patients/{caregiverId}")
+    fun getPatientsByCaregiver(@Path("caregiverId") caregiverId: Long): Call<List<User>>
+
+
+
 }

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CaregiverHomeActivity">
+    android:layout_height="match_parent">
 
     <!-- Map Fragment -->
     <fragment
@@ -42,6 +41,14 @@
         app:layout_constraintStart_toStartOf="@+id/settingsButton"
         app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
 
+    <Button
+        android:id="@+id/viewPatientsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hastalarımı Görüntüle"
+        app:layout_constraintTop_toBottomOf="@+id/logoutButton"
+        app:layout_constraintStart_toStartOf="@+id/logoutButton"
+        app:layout_constraintEnd_toEndOf="@+id/logoutButton"/>
     <!-- Logout Button (Always Visible) -->
     <Button
         android:id="@+id/logoutButton"

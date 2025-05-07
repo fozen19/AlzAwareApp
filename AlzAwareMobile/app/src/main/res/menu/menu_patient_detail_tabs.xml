@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_add_med"
+        android:title="İlaç Ekle"/>
+
+    <item
+        android:id="@+id/nav_view_meds"
+        android:title="İlaçları Gör"/>
+
+    <item
+        android:id="@+id/nav_geofence"
+        android:title="Geofence"/>
+
+    <item
+        android:id="@+id/nav_location"
+        android:title="Konum"/>
+</menu>
