@@ -21,7 +21,7 @@ class CaregiverSignupActivity : AppCompatActivity() {
         binding.tvSignupTitle.text = "Bakıcı Kayıt"
 
         binding.btnSignup.setOnClickListener {
-            val username = binding.etName.text.toString()
+            val username = binding.etUserName.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val firstName = binding.etFirstName.text.toString()

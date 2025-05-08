@@ -1,9 +1,11 @@
 [versions]
+googleMaterial = "1.11.0"
+playServicesMaps = "18.2.0"
 retrofit = "2.9.0"
 okhttp = "4.12.0"
 gson = "2.10.1"
 lifecycle = "2.8.7"
-agp = "8.9.1"
+agp = "8.7.2"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -15,8 +17,12 @@ activity = "1.10.1"
 maps = "19.2.0"
 constraintlayout = "2.2.1"
 playServicesLocation = "21.3.0"
+viewpager2 = "1.1.0"
 
 [libraries]
+androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+material-v1110 = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
+play-services-maps-v1820 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
@@ -42,6 +48,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
