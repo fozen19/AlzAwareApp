@@ -21,23 +21,25 @@ class CaregiverLoginActivity : AppCompatActivity() {
         binding.tvLoginTitle.text = "Bakıcı Girişi"
 
         binding.btnLogin.setOnClickListener {
-            val email = binding.etEmail.text.toString()
+            val userName = binding.etUserName.text.toString()
             val password = binding.etPassword.text.toString()
 
-            if (email.isBlank() || password.isBlank()) {
+            if (userName.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "Email ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             // ✅ Şimdi doğru şekilde giriş yapıyoruz:
             viewModel.login(
-                email, password, role = "caregiver",
-                onSuccess = {
-                    startActivity(Intent(this, CaregiverHomeActivity::class.java))
+                userName , password, role = "caregiver",
+                onSuccess = { userId ->
+                    val intent = Intent(this, CaregiverHomeActivity::class.java)
+                    intent.putExtra("caregiverId", userId)
+                    startActivity(intent)
                     finish()
                 },
-                onError = {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                onError = { errorMessage ->
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             )
         }
