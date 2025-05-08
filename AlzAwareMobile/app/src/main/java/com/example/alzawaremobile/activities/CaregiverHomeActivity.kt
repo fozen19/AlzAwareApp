@@ -43,6 +43,8 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         settingsButton.setOnClickListener {
             toggleAddPatientButtonVisibility()
+            toggleLogoutButtonVisibility()
+            toggleViewPatientsButtonVisibility()
         }
 
         addPatientButton.setOnClickListener {
@@ -68,7 +70,12 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun toggleAddPatientButtonVisibility() {
         addPatientButton.visibility = if (addPatientButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
-
+    private fun toggleLogoutButtonVisibility() {
+        logoutButton.visibility = if (logoutButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+    private fun toggleViewPatientsButtonVisibility() {
+        viewPatientsButton.visibility = if (viewPatientsButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
     private fun showAddPatientDialog() {
         val input = android.widget.EditText(this)
         input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
