@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Daha büyük harita alanı -->
+            <fragment
+                android:id="@+id/mapSafeLocation"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="650dp" />
+
+            <EditText
+                android:id="@+id/etLocationName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Konum İsmi Girin"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/btnSaveLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Konumu Kaydet"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp" />
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

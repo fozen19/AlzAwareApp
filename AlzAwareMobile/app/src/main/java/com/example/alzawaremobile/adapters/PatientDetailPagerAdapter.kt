@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.alzawaremobile.fragments.AddMedicationFragment
-import com.example.alzawaremobile.fragments.CreateGeofenceFragment
+import com.example.alzawaremobile.fragments.SafeLocationFragment
 import com.example.alzawaremobile.fragments.ViewLocationFragment
 import com.example.alzawaremobile.fragments.ViewMedicationsFragment
 
@@ -15,7 +15,7 @@ class PatientDetailPagerAdapter(activity: AppCompatActivity) : FragmentStateAdap
         return when (position) {
             0 -> AddMedicationFragment()
             1 -> ViewMedicationsFragment()
-            2 -> CreateGeofenceFragment()
+            2 -> SafeLocationFragment()
             3 -> ViewLocationFragment()
             else -> throw IllegalStateException("Geçersiz sekme")
         }
