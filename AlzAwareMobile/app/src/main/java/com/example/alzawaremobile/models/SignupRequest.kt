@@ -8,5 +8,5 @@ data class SignupRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String?,
-    val role: Set<String>?
+    val role: String
 )

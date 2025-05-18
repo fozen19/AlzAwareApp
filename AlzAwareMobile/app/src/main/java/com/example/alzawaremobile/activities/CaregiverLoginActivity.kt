@@ -31,7 +31,7 @@ class CaregiverLoginActivity : AppCompatActivity() {
 
             // ✅ Şimdi doğru şekilde giriş yapıyoruz:
             viewModel.login(
-                userName , password, role = "caregiver",
+                userName , password, role = "CAREGIVER",
                 onSuccess = { userId ->
                     val intent = Intent(this, CaregiverHomeActivity::class.java)
                     intent.putExtra("caregiverId", userId)

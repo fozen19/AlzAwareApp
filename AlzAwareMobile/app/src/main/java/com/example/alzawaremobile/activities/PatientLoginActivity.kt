@@ -30,7 +30,7 @@ class PatientLoginActivity : AppCompatActivity() {
             }
 
             // ✅ Burada doğru role gönderiyoruz artık: patient
-            viewModel.login(userName, password, role = "patient",
+            viewModel.login(userName, password, role = "PATIENT",
                 onSuccess = {
                     startActivity(Intent(this, PatientHomeActivity::class.java))
                     finish()

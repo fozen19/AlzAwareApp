@@ -41,7 +41,7 @@ class PatientSignupActivity : AppCompatActivity() {
                 firstName = firstName,
                 lastName = lastName,
                 phoneNumber = phoneNumber.ifEmpty { null },
-                role = "patient",
+                role = "PATIENT",
                 onSuccess = {
                     startActivity(Intent(this, PatientHomeActivity::class.java))
                     finish()

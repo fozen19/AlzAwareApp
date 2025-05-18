@@ -8,6 +8,6 @@ data class AuthResponse(
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
-    val roles: List<String>
+    val roles: String,
 )
 

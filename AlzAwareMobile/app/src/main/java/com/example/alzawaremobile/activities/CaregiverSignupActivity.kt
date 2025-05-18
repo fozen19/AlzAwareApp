@@ -41,7 +41,7 @@ class CaregiverSignupActivity : AppCompatActivity() {
                 firstName = firstName,
                 lastName = lastName,
                 phoneNumber = phoneNumber.ifEmpty { null },
-                role = "caregiver",
+                role = "CAREGIVER",
                 onSuccess = {
                     startActivity(Intent(this, CaregiverHomeActivity::class.java))
                     finish()

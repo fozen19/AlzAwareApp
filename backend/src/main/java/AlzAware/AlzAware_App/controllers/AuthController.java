@@ -1,13 +1,11 @@
 package AlzAware.AlzAware_App.controllers;
 
 import AlzAware.AlzAware_App.models.ERole;
-import AlzAware.AlzAware_App.models.Role;
 import AlzAware.AlzAware_App.models.User;
 import AlzAware.AlzAware_App.payload.request.LoginRequest;
 import AlzAware.AlzAware_App.payload.request.SignupRequest;
 import AlzAware.AlzAware_App.payload.response.JwtResponse;
 import AlzAware.AlzAware_App.payload.response.MessageResponse;
-import AlzAware.AlzAware_App.repository.RoleRepository;
 import AlzAware.AlzAware_App.repository.UserRepository;
 import AlzAware.AlzAware_App.security.jwt.JwtUtils;
 import AlzAware.AlzAware_App.security.services.UserDetailsImpl;
@@ -24,10 +22,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -39,9 +36,6 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder encoder;
@@ -61,7 +55,7 @@ public class AuthController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
@@ -70,7 +64,7 @@ public class AuthController {
                 userDetails.getFirstName(),
                 userDetails.getLastName(),
                 userDetails.getPhoneNumber(),
-                roles));
+                roles.getFirst()));
     }
 
     @PostMapping("/signup")
@@ -88,48 +82,25 @@ public class AuthController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
+        ERole role;
+        try {
+            role = ERole.valueOf(signUpRequest.getRole().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Invalid role '" + signUpRequest.getRole() + "' provided!"));
+        }
+
+
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getFirstName(),
                 signUpRequest.getLastName(),
-                signUpRequest.getPhoneNumber());
+                signUpRequest.getPhoneNumber(), role);
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "doctor":
-                        Role doctorRole = roleRepository.findByName(ERole.ROLE_DOCTOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(doctorRole);
-                        break;
-                    case "caregiver":
-                        Role caregiverRole = roleRepository.findByName(ERole.ROLE_CAREGIVER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(caregiverRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

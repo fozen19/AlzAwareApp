@@ -24,6 +24,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
+        val backendRoleString = when (role.lowercase()) { // Use lowercase for case-insensitivity
+            "patient" -> "PATIENT"
+            "caregiver" -> "CAREGIVER"
+            "doctor" -> "DOCTOR" // Add other roles as needed
+            "admin" -> "ADMIN"
+            else -> {
+                onError("Invalid role provided: $role")
+                return // Stop execution if the role is invalid
+            }
+        }
         val request = SignupRequest(
             username = username,
             email = email,
@@ -31,7 +41,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             firstName = firstName,
             lastName = lastName,
             phoneNumber = phoneNumber,
-            role = setOf(role) // Backend Set<String> olarak role bekliyor
+            role = backendRoleString // Backend Set<String> olarak role bekliyor
         )
 
         repo.signup(request) { result ->
