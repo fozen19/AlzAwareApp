@@ -92,6 +92,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7") // Or the latest version
     implementation("androidx.activity:activity-compose:1.9.0") // Or the latest version
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
