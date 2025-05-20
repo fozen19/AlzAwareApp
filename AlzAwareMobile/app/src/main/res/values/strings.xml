@@ -3,4 +3,6 @@
     <string name="settings_button_description">Settings</string>
     <string name="add_patient">Hasta Ekle</string>
     <string name="logout">Çıkış Yap</string>
+    <string name="edit_option">Düzenle</string>
+    <string name="delete_option">Sil</string>
 </resources>
