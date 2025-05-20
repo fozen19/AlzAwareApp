@@ -8,8 +8,8 @@
         android:title="İlaçları Gör"/>
 
     <item
-        android:id="@+id/nav_geofence"
-        android:title="Geofence"/>
+        android:id="@+id/nav_safe_locations"
+        android:title="Safe Locations"/>
 
     <item
         android:id="@+id/nav_location"

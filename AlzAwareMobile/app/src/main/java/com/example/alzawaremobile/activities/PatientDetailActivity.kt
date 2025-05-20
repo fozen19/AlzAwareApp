@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.alzawaremobile.R
 import com.example.alzawaremobile.fragments.AddMedicationFragment
-import com.example.alzawaremobile.fragments.CreateGeofenceFragment
+import com.example.alzawaremobile.fragments.SafeLocationFragment
 import com.example.alzawaremobile.fragments.ViewLocationFragment
 import com.example.alzawaremobile.fragments.ViewMedicationsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,8 +38,8 @@ class PatientDetailActivity : AppCompatActivity() {
                     loadFragment(ViewMedicationsFragment())
                     true
                 }
-                R.id.nav_geofence -> {
-                    loadFragment(CreateGeofenceFragment())
+                R.id.nav_safe_locations -> {
+                    loadFragment(SafeLocationFragment())
                     true
                 }
                 R.id.nav_location -> {
@@ -52,8 +52,13 @@ class PatientDetailActivity : AppCompatActivity() {
     }
 
     private fun loadFragment(fragment: Fragment) {
+        val bundle = Bundle()
+        bundle.putLong("patientId", patientId.toLong())
+        fragment.arguments = bundle
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.patientDetailFragmentContainer, fragment)
             .commit()
     }
+
 }

@@ -4,6 +4,8 @@ import com.example.alzawaremobile.models.AuthResponse
 import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
 import com.example.alzawaremobile.models.LoginRequest
 import com.example.alzawaremobile.models.MessageResponse
+import com.example.alzawaremobile.models.SafeLocation
+import com.example.alzawaremobile.models.SafeLocationRequest
 import com.example.alzawaremobile.models.SignupRequest
 import com.example.alzawaremobile.models.User
 import retrofit2.Call
@@ -26,6 +28,13 @@ interface ApiService {
 
     @GET("api/caregiver-patient/patients/{caregiverId}")
     fun getPatientsByCaregiver(@Path("caregiverId") caregiverId: Long): Call<List<User>>
+
+    @POST("api/safe-location/add")
+    fun addSafeLocation(@Body request: SafeLocationRequest): Call<MessageResponse>
+
+    @GET("api/safe-location/patient/{patientId}")
+    fun getSafeLocationsByPatient(@Path("patientId") patientId: Long): Call<List<SafeLocation>>
+
 
 
 
