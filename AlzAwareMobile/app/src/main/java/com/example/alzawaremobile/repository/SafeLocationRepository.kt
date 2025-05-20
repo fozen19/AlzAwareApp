@@ -47,5 +47,21 @@ class SafeLocationRepository {
             }
         })
     }
+    fun deleteSafeLocation(locationId: Long, callback: (Result<MessageResponse>) -> Unit) {
+        apiService.deleteSafeLocation(locationId).enqueue(object : Callback<MessageResponse> {
+            override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    callback(Result.success(response.body()!!))
+                } else {
+                    callback(Result.failure(Exception("Silme hatası: ${response.code()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                callback(Result.failure(t))
+            }
+        })
+    }
+
 
 }

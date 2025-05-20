@@ -4,35 +4,77 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="64dp"
+            android:paddingBottom="16dp">
 
-            <!-- Daha büyük harita alanı -->
+            <!-- 📍 Arama Alanı -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/etSearchAddress"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="48dp"
+                    android:hint="Adres ara"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:drawable/edit_text"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/btnSearchAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="Search"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:paddingHorizontal="16dp"
+                    android:backgroundTint="@android:color/holo_blue_dark" />
+            </LinearLayout>
+
+            <!-- 🌍 Harita -->
             <fragment
                 android:id="@+id/mapSafeLocation"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="650dp" />
+                android:layout_height="500dp"
+                android:layout_marginBottom="16dp" />
 
+            <!-- 🏷️ Lokasyon İsmi -->
             <EditText
                 android:id="@+id/etLocationName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Konum İsmi Girin"
-                android:layout_marginTop="16dp" />
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/edit_text" />
 
+            <!-- 💾 Kaydet Butonu -->
             <Button
                 android:id="@+id/btnSaveLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Konumu Kaydet"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="32dp" />
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:padding="12dp" />
+
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
