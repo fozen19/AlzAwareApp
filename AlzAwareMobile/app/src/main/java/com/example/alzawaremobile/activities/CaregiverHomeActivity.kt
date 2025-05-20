@@ -1,6 +1,9 @@
 package com.example.alzawaremobile.activities
 
 import android.content.Intent
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -117,8 +120,17 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val sydney = LatLng(-34.0, 151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        caregiverPatientViewModel.fetchCurrentLocation()
+
+        lifecycleScope.launch {
+            caregiverPatientViewModel.currentLocation.collectLatest { location ->
+                location?.let {
+                    val userLatLng = LatLng(it.latitude, it.longitude)
+                    map.addMarker(MarkerOptions().position(userLatLng).title("Your Location"))
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15f))
+                }
+            }
+        }
     }
+
 }

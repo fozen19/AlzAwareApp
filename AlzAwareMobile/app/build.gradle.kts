@@ -82,6 +82,7 @@ dependencies {
 
 // (Optional) OkHttp Logging Interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation("androidx.glance:glance:1.1.1") // Or the latest version
     implementation("androidx.glance:glance-appwidget:1.1.1") //
     implementation("androidx.compose.ui:ui:1.6.7") // Or the latest version
