@@ -22,7 +22,9 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBA01GJrOK4oEse7VTg0HIMQMqahdEdro4" />
-
+        <receiver android:name=".activities.GeofenceBroadcastReceiver"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_STICKY" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

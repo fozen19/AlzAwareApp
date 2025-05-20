@@ -1,4 +1,5 @@
 [versions]
+playServicesLocationVersion = "21.0.1"
 googleMaterial = "1.11.0"
 playServicesMaps = "18.2.0"
 retrofit = "2.9.0"
@@ -25,6 +26,7 @@ material-v1110 = { module = "com.google.android.material:material", version.ref 
 play-services-maps-v1820 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+play-services-location-v2101 = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocationVersion" }
 
 # OkHttp logging interceptor
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }

@@ -2,6 +2,7 @@ package com.example.alzawaremobile.network
 
 import com.example.alzawaremobile.models.AuthResponse
 import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
+import com.example.alzawaremobile.models.GeofenceRequest
 import com.example.alzawaremobile.models.LoginRequest
 import com.example.alzawaremobile.models.MessageResponse
 import com.example.alzawaremobile.models.SignupRequest
@@ -27,6 +28,7 @@ interface ApiService {
     @GET("api/caregiver-patient/patients/{caregiverId}")
     fun getPatientsByCaregiver(@Path("caregiverId") caregiverId: Long): Call<List<User>>
 
-
+    @POST("api/geofence/save")
+    fun saveGeofence(@Body request: GeofenceRequest): Call<MessageResponse>
 
 }
