@@ -10,6 +10,7 @@ import com.example.alzawaremobile.models.SignupRequest
 import com.example.alzawaremobile.models.User
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -34,6 +35,8 @@ interface ApiService {
 
     @GET("api/safe-location/patient/{patientId}")
     fun getSafeLocationsByPatient(@Path("patientId") patientId: Long): Call<List<SafeLocation>>
+    @DELETE("api/safe-location/delete/{locationId}")
+    fun deleteSafeLocation(@Path("locationId") locationId: Long): Call<MessageResponse>
 
 
 

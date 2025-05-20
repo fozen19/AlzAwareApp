@@ -34,5 +34,16 @@ class SafeLocationViewModel(application: Application) : AndroidViewModel(applica
                 .onFailure { onError(it.message ?: "Safe location verisi alınamadı") }
         }
     }
+    fun deleteSafeLocation(
+        locationId: Long,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        repository.deleteSafeLocation(locationId) { result ->
+            result.onSuccess { onSuccess() }
+            result.onFailure { onError(it.message ?: "Konum silinemedi") }
+        }
+    }
+
 
 }
