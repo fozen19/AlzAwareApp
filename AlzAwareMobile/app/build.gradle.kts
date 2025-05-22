@@ -103,5 +103,5 @@ dependencies {
 
     implementation(libs.material.v1110) // TabLayout için
     implementation(libs.androidx.viewpager2)       // ViewPager2 için
-
+    implementation(libs.androidx.work.runtime.ktx)
 }
