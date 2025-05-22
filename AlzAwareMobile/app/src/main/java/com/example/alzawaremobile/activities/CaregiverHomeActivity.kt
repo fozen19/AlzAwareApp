@@ -167,7 +167,15 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+        map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
+        // Listen for map clicks to set geofence location
+        map.setOnMapClickListener { latLng ->
+            geofenceLocation = latLng
+            updateGeofenceCircle(latLng, 0f) // Temporary circle with no radius
+            map.addMarker(MarkerOptions().position(latLng).title("Selected Geofence Center"))
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        }
         // Get caregiver's location from the backend
         caregiverPatientViewModel.getCaregiverLocation(caregiverId)
 
@@ -196,16 +204,6 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 Toast.makeText(this, "Failed to get patients: $error", Toast.LENGTH_SHORT).show()
             }
         )
-    }
-        map.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-        // Listen for map clicks to set geofence location
-        map.setOnMapClickListener { latLng ->
-            geofenceLocation = latLng
-            updateGeofenceCircle(latLng, 0f) // Temporary circle with no radius
-            map.addMarker(MarkerOptions().position(latLng).title("Selected Geofence Center"))
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-        }
     }
     private fun updateGeofenceCircle(center: LatLng, radius: Float) {
         // Remove any existing circle
