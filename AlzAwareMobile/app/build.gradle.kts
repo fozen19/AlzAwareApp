@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+
     // Added Later
 
     implementation(libs.retrofit)
@@ -88,6 +89,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.6.7") // Or the latest version
     implementation("androidx.compose.material:material:1.6.7") // Or the latest version
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.7") // Or the latest version
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.7") // Or the latest version
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7") // Or the latest version
     implementation("androidx.activity:activity-compose:1.9.0") // Or the latest version

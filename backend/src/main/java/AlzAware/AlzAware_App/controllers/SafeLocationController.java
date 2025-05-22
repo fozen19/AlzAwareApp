@@ -45,4 +45,14 @@ public class SafeLocationController {
         List<SafeLocation> safeLocations = safeLocationRepository.findByPatientId(patientId);
         return ResponseEntity.ok(safeLocations);
     }
+    @DeleteMapping("/delete/{locationId}")
+    public ResponseEntity<MessageResponse> deleteSafeLocation(@PathVariable Long locationId) {
+        if (!safeLocationRepository.existsById(locationId)) {
+            return ResponseEntity.status(404).body(new MessageResponse("Konum bulunamadı"));
+        }
+
+        safeLocationRepository.deleteById(locationId);
+        return ResponseEntity.ok(new MessageResponse("Konum başarıyla silindi."));
+    }
+
 }
