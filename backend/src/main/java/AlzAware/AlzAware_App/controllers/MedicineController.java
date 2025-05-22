@@ -1,7 +1,7 @@
 package AlzAware.AlzAware_App.controllers;
 
 import AlzAware.AlzAware_App.models.Medicine;
-import AlzAware.AlzAware_App.service.MedicineService;
+import AlzAware.AlzAware_App.security.services.MedicineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

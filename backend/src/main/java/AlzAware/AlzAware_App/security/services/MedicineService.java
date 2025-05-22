@@ -1,4 +1,4 @@
-package AlzAware.AlzAware_App.service;
+package AlzAware.AlzAware_App.security.services;
 
 import AlzAware.AlzAware_App.models.Medicine;
 import AlzAware.AlzAware_App.repository.MedicineRepository;
