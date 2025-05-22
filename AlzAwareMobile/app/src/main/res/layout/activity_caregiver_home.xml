@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
 
     <!-- Map Fragment -->
     <fragment
@@ -47,19 +49,55 @@
         android:layout_height="wrap_content"
         android:text="Hastalarımı Görüntüle"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/logoutButton"
+        app:layout_constraintEnd_toEndOf="@+id/logoutButton"
         app:layout_constraintStart_toStartOf="@+id/logoutButton"
-        app:layout_constraintEnd_toEndOf="@+id/logoutButton"/>
+        app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
     <!-- Logout Button (Always Visible) -->
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/logout"
         android:visibility="gone"
-        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/settingsButton"
         app:layout_constraintStart_toStartOf="@+id/settingsButton"
         app:layout_constraintTop_toBottomOf="@+id/addPatientButton" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <Spinner
+            android:id="@+id/spinnerPatients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/select_patient"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+        <EditText
+            android:id="@+id/etRadius"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Radius (m)"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btnSetGeofence"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Set Geofence"
+            tools:layout_editor_absoluteX="272dp"
+            tools:layout_editor_absoluteY="12dp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

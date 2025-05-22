@@ -5,4 +5,5 @@
     <string name="logout">Çıkış Yap</string>
     <string name="edit_option">Düzenle</string>
     <string name="delete_option">Sil</string>
+    <string name="select_patient">select patient</string>
 </resources>
