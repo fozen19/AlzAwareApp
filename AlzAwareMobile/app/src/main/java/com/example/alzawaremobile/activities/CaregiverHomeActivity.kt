@@ -120,8 +120,11 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        caregiverPatientViewModel.fetchCurrentLocation()
+        
+        // Get caregiver's location from the backend
+        caregiverPatientViewModel.getCaregiverLocation(caregiverId)
 
+        // Observe caregiver's location
         lifecycleScope.launch {
             caregiverPatientViewModel.currentLocation.collectLatest { location ->
                 location?.let {
@@ -131,6 +134,20 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-    }
 
+        // Get patients and show first patient's location
+        caregiverPatientViewModel.getPatientsByCaregiver(
+            caregiverId,
+            onSuccess = { patients ->
+                if (patients.isNotEmpty()) {
+                    // Get location of first patient
+                    val firstPatient = patients.first()
+                    caregiverPatientViewModel.getCaregiverLocation(firstPatient.id)
+                }
+            },
+            onError = { error ->
+                Toast.makeText(this, "Failed to get patients: $error", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
 }

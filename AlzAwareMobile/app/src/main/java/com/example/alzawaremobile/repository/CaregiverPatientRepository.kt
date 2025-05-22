@@ -1,6 +1,7 @@
 package com.example.alzawaremobile.repository
 
 import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
+import com.example.alzawaremobile.models.LocationDto
 import com.example.alzawaremobile.models.MessageResponse
 import com.example.alzawaremobile.models.User
 import com.example.alzawaremobile.network.ApiClient
@@ -12,8 +13,6 @@ import retrofit2.Response
 class CaregiverPatientRepository {
 
     private val apiService: ApiService = ApiClient.createService(ApiService::class.java)
-
-
 
     private fun <T> callbackAdapter(callback: (Result<T>) -> Unit): Callback<T> {
         return object : Callback<T> {
@@ -57,4 +56,12 @@ class CaregiverPatientRepository {
         })
     }
 
+    fun updateLocation(caregiverId: Long, latitude: Double, longitude: Double, callback: (Result<Void>) -> Unit) {
+        val locationDto = LocationDto(latitude, longitude)
+        apiService.updateLocation(caregiverId, locationDto).enqueue(callbackAdapter(callback))
+    }
+
+    fun getLocation(caregiverId: Long, callback: (Result<LocationDto>) -> Unit) {
+        apiService.getLocation(caregiverId).enqueue(callbackAdapter(callback))
+    }
 }
