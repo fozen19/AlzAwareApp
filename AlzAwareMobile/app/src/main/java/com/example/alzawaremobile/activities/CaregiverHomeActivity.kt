@@ -102,7 +102,6 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         val etRadius = findViewById<EditText>(R.id.etRadius)
 
         btnSetGeofence.setOnClickListener {
-            setGeofenceForSelectedPatient()
             val radius = etRadius.text.toString().toFloatOrNull()
             if (geofenceLocation == null) {
                 Toast.makeText(this, "Please select a location by tapping the map", Toast.LENGTH_SHORT).show()
@@ -328,38 +327,6 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(this, "Failed to load patients: $error", Toast.LENGTH_SHORT).show()
         })
 
-    }
-    private fun setGeofenceForSelectedPatient() {
-        val radiusText = findViewById<EditText>(R.id.etRadius).text.toString()
-        val radius = radiusText.toFloatOrNull()
-        val geofenceLatLng = geofenceLocation
-
-        if (geofenceLatLng == null) {
-            Toast.makeText(this, "Set a location on the map first.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (radius == null || radius <= 0) {
-            Toast.makeText(this, "Please enter a valid radius.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val patientId = getSelectedPatientId()
-        if (patientId <= 0) {
-            Toast.makeText(this, "Invalid patient ID. Please select a valid patient.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Create a GeofenceRequest object
-        val geofenceRequest = GeofenceRequest(
-            patientId = patientId,
-            latitude = geofenceLatLng.latitude,
-            longitude = geofenceLatLng.longitude,
-            radius = radius.toDouble(),
-            name = "Geofence for Patient $patientId",
-        )
-
-        saveGeofenceToBackend(geofenceLocation!!, radius.toDouble())
     }
 
 }
