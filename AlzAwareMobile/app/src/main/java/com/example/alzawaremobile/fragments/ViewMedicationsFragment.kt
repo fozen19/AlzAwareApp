@@ -101,22 +101,24 @@ class ViewMedicationsFragment : Fragment() {
         if (med != null) {
             med?.let {
                 medicineName.setText(it.name)
-                when (it.whichDayParts) {
+                when (it.inMorning) {
                     1 -> {
                         dayParts.check(dayParts.getChildAt(1).id)
                     }
+                }
 
-                    2 -> {
-                        dayParts.check(dayParts.getChildAt(0).id)
+                when (it.inAfternoon) {
+                    1 -> {
                         dayParts.check(dayParts.getChildAt(2).id)
                     }
+                }
 
-                    else -> {
-                        for (i in 0..2) {
-                            dayParts.check(dayParts.getChildAt(i).id)
-                        }
+                when (it.inEvening) {
+                    1 -> {
+                        dayParts.check(dayParts.getChildAt(3).id)
                     }
                 }
+
 
                 if (it.usage == 0) {
                     usage.check(usage.getChildAt(0).id)
@@ -147,11 +149,19 @@ class ViewMedicationsFragment : Fragment() {
             }
 
             val checkedDayParts = dayParts.checkedButtonIds
-            val whichDayPart = when {
+            val inMorning = when {
+                checkedDayParts.contains(dayParts.getChildAt(0).id) -> 1
+                else -> 0
+            }
+
+            val inAfternoon = when {
                 checkedDayParts.contains(dayParts.getChildAt(1).id) -> 1
-                checkedDayParts.contains(dayParts.getChildAt(0).id) &&
-                        checkedDayParts.contains(dayParts.getChildAt(2).id) -> 2
-                else -> 3
+                else -> 0
+            }
+
+            val inEvening = when {
+                checkedDayParts.contains(dayParts.getChildAt(2).id) -> 1
+                else -> 0
             }
 
             val checkedUsage = usage.checkedButtonId
@@ -163,7 +173,9 @@ class ViewMedicationsFragment : Fragment() {
                 val newMed = Medicine(
                     id = null,
                     name = name,
-                    whichDayParts = whichDayPart,
+                    inMorning = inMorning,
+                    inAfternoon = inAfternoon,
+                    inEvening = inEvening,
                     usage = usage,
                     count = count,
                     patient = User(
@@ -183,7 +195,9 @@ class ViewMedicationsFragment : Fragment() {
             } else {
                 val updated = med.copy(
                     name = name,
-                    whichDayParts = whichDayPart,
+                    inMorning = inMorning,
+                    inAfternoon = inAfternoon,
+                    inEvening = inEvening,
                     usage = usage,
                     count = count
                 )

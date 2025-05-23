@@ -31,7 +31,9 @@ public class MedicineService {
                 .orElseThrow(() -> new RuntimeException("Medicine not found"));
 
         existingMedicine.setName(medicine.getName());
-        existingMedicine.setWhichDayParts(medicine.getWhichDayParts());
+        existingMedicine.setInMorning(medicine.getInMorning());
+        existingMedicine.setInAfternoon(medicine.getInAfternoon());
+        existingMedicine.setInEvening(medicine.getInEvening());
         existingMedicine.setUsage(medicine.getUsage());
         existingMedicine.setCount(medicine.getCount());
 
