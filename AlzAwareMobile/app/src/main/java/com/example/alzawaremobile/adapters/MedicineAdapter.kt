@@ -28,12 +28,26 @@ class MedicineAdapter(
         val med = medicines[position]
         holder.nameTextView.text = med.name
         holder.daysTextView.text = "Her Gün"
-        holder.dayPartsTextView.text = when (med.whichDayParts) {
-            1 -> "Öğle"
-            2 -> "Sabah - Akşam"
-            3 -> "Sabah - Öğle - Akşam"
+
+        val dayPartsTextbuilder = StringBuilder()
+        when (med.inMorning) {
+            1 ->  dayPartsTextbuilder.append("Sabah ")
+            0 -> dayPartsTextbuilder.append("")
             else -> ""
         }
+        when (med.inAfternoon) {
+            1 ->  dayPartsTextbuilder.append("Öğle ")
+            0 -> dayPartsTextbuilder.append("")
+            else -> ""
+        }
+        when (med.inEvening) {
+            1 ->  dayPartsTextbuilder.append("Akşam")
+            0 -> dayPartsTextbuilder.append("")
+            else -> ""
+        }
+
+        holder.dayPartsTextView.text = dayPartsTextbuilder.toString()
+
         holder.usageTextView.text = if (med.usage == 1) "Tok Karnına" else "Aç Karnına"
 
         holder.menuButton.setOnClickListener { anchor ->

@@ -24,7 +24,13 @@ public class Medicine {
     private String name;
 
     @NotNull
-    private int whichDayParts;  // 1 = öğle, 2 = sabah - akşam, 3 = sabah - öğle - akşam
+    private int inMorning;  // 1 = take, 0 = not take
+
+    @NotNull
+    private int inAfternoon;  // 1 = take, 0 = not take
+
+    @NotNull
+    private int inEvening;  // 1 = take, 0 = not take
 
     @NotNull
     private int usage;  // 1 = tok, 0 = aç
@@ -36,9 +42,11 @@ public class Medicine {
     @JoinColumn(name = "patient_id")
     private User patient;
 
-    public Medicine(String name, int whichDayParts, int usage, int count, User patient) {
+    public Medicine(String name, int inMorning, int inAfternoon, int inEvening, int usage, int count, User patient) {
         this.name = name;
-        this.whichDayParts = whichDayParts;
+        this.inMorning = inMorning;
+        this.inAfternoon = inAfternoon;
+        this.inEvening = inEvening;
         this.usage = usage;
         this.count = count;
         this.patient = patient;
