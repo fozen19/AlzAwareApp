@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F2F2F2"
+    android:background="@android:color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,11 +9,11 @@
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="👥 Atanmış Hastalar"
-        android:textSize="22sp"
+        android:text="Atanmış Hastalar"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:textColor="#37474F"
+        android:textColor="@android:color/holo_blue_light"
         android:layout_marginBottom="12dp" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,15 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/backButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="◀️ Geri Dön"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#1976D2"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
+        android:text="Geri Dön"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_marginTop="12dp" />
 </LinearLayout>

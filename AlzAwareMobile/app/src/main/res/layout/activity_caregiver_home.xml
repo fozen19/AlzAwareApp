@@ -4,100 +4,186 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:context=".activities.CaregiverHomeActivity">
 
-    <!-- Map Fragment -->
+    <!-- 🗺️ Harita -->
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Gear Button -->
+    <!-- 🔍 Adres arama -->
+    <EditText
+        android:id="@+id/etSearchAddress"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="Adres ara..."
+        android:inputType="text"
+        android:backgroundTint="@color/black"
+        android:paddingHorizontal="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnSearchAddress"
+        app:layout_constraintWidth_percent="0.7" />
+
+    <Button
+        android:id="@+id/btnSearchAddress"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Ara"
+        android:backgroundTint="@android:color/holo_green_light"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/etSearchAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <!-- ⚙️ Ayar Butonu -->
     <ImageButton
         android:id="@+id/settingsButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_settings_button"
+        android:contentDescription="Ayarlar"
+        android:padding="12dp"
+        android:scaleType="centerInside"
+        android:elevation="8dp"
+        android:src="@android:drawable/ic_menu_preferences"
+        app:layout_constraintTop_toBottomOf="@id/etSearchAddress"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnZoomIn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/settings_button_description"
-        android:src="@android:drawable/ic_menu_preferences"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@android:drawable/ic_menu_add"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_margin="12dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomPanel"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- "Hasta Ekle" Button (Initially Hidden) -->
+    <ImageButton
+        android:id="@+id/btnZoomOut"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_revert"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:layout_margin="12dp"
+        app:layout_constraintBottom_toTopOf="@id/btnZoomIn"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Hasta ekle / Çıkış / Hastalarım -->
     <Button
         android:id="@+id/addPatientButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/add_patient"
+        android:text="Hasta Ekle"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/settingsButton"
-        app:layout_constraintStart_toStartOf="@+id/settingsButton"
-        app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:layout_constraintTop_toBottomOf="@id/settingsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Çıkış Yap"
+        android:visibility="gone"
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:layout_constraintTop_toBottomOf="@id/addPatientButton"
+        app:layout_constraintEnd_toEndOf="@id/addPatientButton"
+        android:layout_marginTop="4dp" />
 
     <Button
         android:id="@+id/viewPatientsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hastalarımı Görüntüle"
+        android:text="Hastalarım"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/logoutButton"
-        app:layout_constraintStart_toStartOf="@+id/logoutButton"
-        app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
-    <!-- Logout Button (Always Visible) -->
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/logout"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/settingsButton"
-        app:layout_constraintStart_toStartOf="@+id/settingsButton"
-        app:layout_constraintTop_toBottomOf="@+id/addPatientButton" />
+        android:backgroundTint="@android:color/holo_blue_light"
+        app:layout_constraintTop_toBottomOf="@id/logoutButton"
+        app:layout_constraintEnd_toEndOf="@id/logoutButton"
+        android:layout_marginTop="4dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- 📍 Geofence Paneli -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomPanel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@android:color/white"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <Spinner
-            android:id="@+id/spinnerPatients"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:spinnerMode="dropdown"
-            android:prompt="@string/select_patient"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp" />
+            android:padding="8dp">
 
-        <EditText
-            android:id="@+id/etRadius"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Radius (m)"
-            android:inputType="number" />
+            <Spinner
+                android:id="@+id/spinnerPatients"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/black"
+                android:spinnerMode="dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/etRadius"
+                app:layout_constraintWidth_percent="0.33" />
 
-        <Button
-            android:id="@+id/btnSetGeofence"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Set Geofence"
-            tools:layout_editor_absoluteX="272dp"
-            tools:layout_editor_absoluteY="12dp" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etRadius"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:hint="Yarıçap (m)"
+                android:inputType="number"
+                android:backgroundTint="@color/black"
+                app:layout_constraintStart_toEndOf="@id/spinnerPatients"
+                app:layout_constraintEnd_toStartOf="@+id/btnSetGeofence"
+                app:layout_constraintTop_toTopOf="@id/spinnerPatients"
+                app:layout_constraintWidth_percent="0.33" />
+
+            <Button
+                android:id="@+id/btnSetGeofence"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Geofence Ayarla"
+                android:textAllCaps="false"
+                android:backgroundTint="@android:color/holo_green_light"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toEndOf="@id/etRadius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/etRadius"
+                app:layout_constraintWidth_percent="0.34" />
+
+            <Button
+                android:id="@+id/btnSaveGeofence"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:text="Geofence Kaydet"
+                android:textAllCaps="false"
+                android:backgroundTint="@android:color/holo_green_light"
+                android:textColor="@android:color/white"
+                app:layout_constraintTop_toBottomOf="@id/btnSetGeofence"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
