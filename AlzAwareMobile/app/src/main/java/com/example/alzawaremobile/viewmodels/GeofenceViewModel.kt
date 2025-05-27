@@ -26,43 +26,45 @@ class GeofenceViewModel(application: Application) : AndroidViewModel(application
         longitude: Double,
         radius: Double,
         name: String,
-        patientId: Long // Make sure you have access to the relevant patientId
+        patientId: Long,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
     ) {
-        _isLoading.value = true // Indicate loading start (for UI)
-        val token = TokenManager.getToken(context) // Get the saved auth token
+        _isLoading.value = true
+        val token = TokenManager.getToken(context)
 
         if (token == null) {
-            _saveGeofenceResult.value = Result.failure(Exception("User not authenticated. Token is missing."))
-            _isLoading.value = false // Reset loading state
-            Log.e("GeofenceViewModel", "Cannot save geofence: Auth token is null.")
+            _isLoading.value = false
+            onError("User not authenticated. Token is missing.")
+            Log.e("GeofenceViewModel", "Auth token is null.")
             return
         }
 
         val geofenceRequest = GeofenceRequest(
-            latitude  = latitude,
-            longitude  = longitude,
+            latitude = latitude,
+            longitude = longitude,
             radius = radius,
             name = name,
-            patientId = patientId,
+            patientId = patientId
         )
 
-        Log.d("GeofenceViewModel", "Attempting to save geofence: $geofenceRequest with token: $token")
+        Log.d("GeofenceViewModel", "Sending geofence: $geofenceRequest")
 
         repository.saveGeofence(token, geofenceRequest) { result ->
-            // Update LiveData on the main thread if the callback is not on the main thread
-            // For simplicity, using postValue which handles this.
-            _isLoading.postValue(false) // Indicate loading finished
-            _saveGeofenceResult.postValue(result)
+            _isLoading.postValue(false)
 
             result.onSuccess {
-                Log.i("GeofenceViewModel", "Geofence save successful: ${it.message}")
-                // You might want to trigger navigation or show a success message here
+                _saveGeofenceResult.postValue(Result.success(it))
+                Log.i("GeofenceViewModel", "Geofence saved: ${it.message}")
+                onSuccess()
             }.onFailure { exception ->
-                Log.e("GeofenceViewModel", "Geofence save failed: ${exception.message}", exception)
-                // You might want to show an error message to the user here
+                _saveGeofenceResult.postValue(Result.failure(exception))
+                Log.e("GeofenceViewModel", "Failed to save geofence: ${exception.message}", exception)
+                onError(exception.localizedMessage ?: "Unknown error occurred")
             }
         }
     }
+
 
     // Optional: Function to clear the result, e.g., after the UI has consumed it
     fun clearSaveResult() {

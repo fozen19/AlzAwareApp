@@ -17,21 +17,18 @@ class CaregiverLoginActivity : AppCompatActivity() {
         binding = ActivityCaregiverLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Başlıkları ayarla
-        binding.tvLoginTitle.text = "Bakıcı Girişi"
-
         binding.btnLogin.setOnClickListener {
             val userName = binding.etUserName.text.toString()
             val password = binding.etPassword.text.toString()
 
             if (userName.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Email ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Email and password must not be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // ✅ Şimdi doğru şekilde giriş yapıyoruz:
+            // ✅ Proceed with login
             viewModel.login(
-                userName , password, role = "CAREGIVER",
+                userName, password, role = "CAREGIVER",
                 onSuccess = { userId ->
                     val intent = Intent(this, CaregiverHomeActivity::class.java)
                     intent.putExtra("caregiverId", userId)

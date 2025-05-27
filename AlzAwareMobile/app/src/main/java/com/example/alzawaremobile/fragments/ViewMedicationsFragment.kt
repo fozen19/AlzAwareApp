@@ -1,13 +1,12 @@
 package com.example.alzawaremobile.fragments
 
 import android.app.AlertDialog
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,7 +63,7 @@ class ViewMedicationsFragment : Fragment() {
         )
         recyclerView.adapter = adapter
 
-        val fab = view.findViewById<FloatingActionButton>(R.id.add_button)
+        val fab = view.findViewById<Button>(R.id.add_button)
         fab.setOnClickListener {
             showAddEditDialog(null)
         }
@@ -94,9 +93,9 @@ class ViewMedicationsFragment : Fragment() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_edit_medicine, null)
 
         val medicineName = dialogView.findViewById<EditText>(R.id.medicineName)
-        val dayParts   = dialogView.findViewById<MaterialButtonToggleGroup>(R.id.medication_dayParts)
-        val usage     = dialogView.findViewById<MaterialButtonToggleGroup>(R.id.medication_usage)
-        val count     = dialogView.findViewById<EditText>(R.id.medicine_count)
+        val dayParts = dialogView.findViewById<MaterialButtonToggleGroup>(R.id.medication_dayParts)
+        val usage = dialogView.findViewById<MaterialButtonToggleGroup>(R.id.medication_usage)
+        val count = dialogView.findViewById<EditText>(R.id.medicine_count)
 
         if (med != null) {
             med?.let {
@@ -129,13 +128,13 @@ class ViewMedicationsFragment : Fragment() {
             }
         }
 
-        val title = if (med == null) "Yeni İlaç Ekle" else "İlaç Düzenle"
-        val buttonText = if (med == null) "Kaydet" else "Düzenle"
+        val title = if (med == null) "Add New Medication" else "Edit Medication"
+        val buttonText = if (med == null) "Save" else "Update"
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(title)
             .setView(dialogView)
-            .setNegativeButton("İptal", null)
+            .setNegativeButton("Cancel", null)
             .setPositiveButton(buttonText, null)
             .create()
 
@@ -144,7 +143,7 @@ class ViewMedicationsFragment : Fragment() {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val name = medicineName.text.toString().trim()
             if (name.isEmpty()) {
-                medicineName.error = "İsim alanı boş bırakılamaz."
+                medicineName.error = "Name field cannot be empty."
                 return@setOnClickListener
             }
 
@@ -190,7 +189,7 @@ class ViewMedicationsFragment : Fragment() {
                 viewModel.createMedicine(newMed)
 
                 view?.let {
-                    Snackbar.make(it, "İlaç eklendi.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(it, "Medication added.", Snackbar.LENGTH_SHORT).show()
                 }
             } else {
                 val updated = med.copy(
@@ -204,32 +203,26 @@ class ViewMedicationsFragment : Fragment() {
                 med.id?.let { it1 -> viewModel.updateMedicine(it1, updated) }
 
                 view?.let {
-                    Snackbar.make(it, "İlaç güncellendi.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(it, "Medication updated.", Snackbar.LENGTH_SHORT).show()
                 }
             }
 
             dialog.dismiss()
             viewModel.refreshList()
-
         }
-
     }
 
     private fun deleteMedicine(med: Medicine) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("İlaç Silinsin mi?")
-            .setMessage("“${med.name}” ilacını silmek istediğinize emin misiniz?")
-            .setNegativeButton("İptal", null)
-            .setPositiveButton("Sil") { _, _ ->
-                // 1) Perform the deletion only after confirmation
+            .setTitle("Delete Medication?")
+            .setMessage("Are you sure you want to delete “${med.name}”?")
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Delete") { _, _ ->
                 med.id?.let { viewModel.deleteMedicine(it) }
-                // 2) Show feedback that it was deleted
                 view?.let {
-                    Snackbar.make(it, "İlaç silindi.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(it, "Medication deleted.", Snackbar.LENGTH_SHORT).show()
                 }
             }
             .show()
     }
-
-
 }

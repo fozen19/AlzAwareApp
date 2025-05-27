@@ -14,28 +14,26 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
 
         if (geofencingEvent?.hasError() ?: true) {
-            val errorMessage = "Geofence error: ${geofencingEvent?.errorCode}"
+            val errorMessage = "Geofence error occurred: ${geofencingEvent?.errorCode}"
             Log.e("GeofenceReceiver", errorMessage)
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Get the geofence transition type
         val geofenceTransition = geofencingEvent.geofenceTransition
 
-        // Handle the geofence transition
         when (geofenceTransition) {
             Geofence.GEOFENCE_TRANSITION_ENTER -> {
-                handleEvent(context, "Entered the geofence")
+                handleEvent(context, "You have entered the safe area.")
             }
             Geofence.GEOFENCE_TRANSITION_EXIT -> {
-                handleEvent(context, "Exited the geofence")
+                handleEvent(context, "You have exited the safe area!")
             }
             Geofence.GEOFENCE_TRANSITION_DWELL -> {
-                handleEvent(context, "Dwelling in the geofence")
+                handleEvent(context, "You are staying within the safe area.")
             }
             else -> {
-                Log.e("GeofenceReceiver", "Unknown geofence transition")
+                Log.e("GeofenceReceiver", "Unknown geofence transition detected.")
             }
         }
     }
@@ -43,7 +41,6 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
     private fun handleEvent(context: Context, message: String) {
         Log.i("GeofenceReceiver", message)
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-
-        // You can add custom logic here, like notifying the caregiver
+        // You can add custom logic here, like sending a notification to the caregiver
     }
 }

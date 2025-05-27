@@ -38,5 +38,5 @@ class PatientAdapter(
         }
     }
 
-    override fun getItemCount() = patients.size
+    override fun getItemCount(): Int = patients.size
 }

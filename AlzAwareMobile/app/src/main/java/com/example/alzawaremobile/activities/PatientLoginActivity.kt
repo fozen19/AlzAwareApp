@@ -17,27 +17,29 @@ class PatientLoginActivity : AppCompatActivity() {
         binding = ActivityPatientLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Başlığı ayarlayalım
+        // Set dynamic title here if needed
 
         binding.btnLogin.setOnClickListener {
             val userName = binding.etUserName.text.toString()
             val password = binding.etPassword.text.toString()
 
-            // 🎯 Boş alan kontrolü
+            // 🎯 Check for empty fields
             if (userName.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Kullanıcı adı ve şifre boş olamaz.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Username and password must not be empty.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // ✅ Burada doğru role gönderiyoruz artık: patient
-            viewModel.login(userName, password, role = "PATIENT",
+            // ✅ Proceed with login for patient role
+            viewModel.login(
+                userName, password, role = "PATIENT",
                 onSuccess = {
                     startActivity(Intent(this, PatientHomeActivity::class.java))
                     finish()
                 },
                 onError = {
                     Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                })
+                }
+            )
         }
 
         binding.tvGoToSignup.setOnClickListener {

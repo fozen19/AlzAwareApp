@@ -27,7 +27,7 @@
         android:id="@+id/btnPatient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hasta Girişi"
+        android:text="Patient Login"
         android:padding="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@android:color/holo_blue_light"
@@ -38,7 +38,7 @@
         android:id="@+id/btnCaregiver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bakıcı Girişi"
+        android:text="Caregiver Login"
         android:padding="16dp"
         android:backgroundTint="@android:color/holo_green_light"
         android:textColor="@android:color/white" />

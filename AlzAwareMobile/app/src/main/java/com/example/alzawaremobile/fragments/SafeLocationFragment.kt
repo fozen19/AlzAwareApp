@@ -59,14 +59,14 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
             val point = selectedLatLng
 
             if (name.isBlank() || point == null) {
-                Toast.makeText(requireContext(), "Lütfen isim ve konum seçin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a name and select a location", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             viewModel.addSafeLocation(
                 patientId, name, point.latitude, point.longitude,
                 onSuccess = {
-                    Toast.makeText(requireContext(), "Konum kaydedildi ✅", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Location saved ✅", Toast.LENGTH_SHORT).show()
                     etLocationName.text.clear()
                     selectedMarker?.remove()
                     selectedLatLng = null
@@ -82,7 +82,7 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
     private fun searchAddress() {
         val query = etSearchAddress.text.toString()
         if (query.isBlank()) {
-            Toast.makeText(requireContext(), "Lütfen bir adres girin", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Please enter an address", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -90,7 +90,7 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
         try {
             val results = geocoder.getFromLocationName(query, 1)
             if (results.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Adres bulunamadı", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Address not found", Toast.LENGTH_SHORT).show()
                 return
             }
 
@@ -102,13 +102,12 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
             selectedMarker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title("Arama Sonucu")
+                    .title("Search Result")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
             )
             selectedMarker?.showInfoWindow()
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
 
-            // 📌 Adres metnini konum adı alanına otomatik yaz
             val addressLines = buildString {
                 for (i in 0..result.maxAddressLineIndex) {
                     append(result.getAddressLine(i))
@@ -118,11 +117,9 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
             etLocationName.setText(addressLines)
 
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
@@ -136,7 +133,7 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
             selectedMarker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title("Yeni Seçilen Konum")
+                    .title("Selected Location")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
             selectedMarker?.showInfoWindow()
@@ -151,19 +148,19 @@ class SafeLocationFragment : Fragment(), OnMapReadyCallback {
         map.setOnInfoWindowLongClickListener { marker ->
             val locationId = marker.tag as? Long ?: return@setOnInfoWindowLongClickListener
             AlertDialog.Builder(requireContext())
-                .setTitle("Konumu Sil")
-                .setMessage("${marker.title} adlı konumu silmek istiyor musunuz?")
-                .setPositiveButton("Evet") { _, _ ->
+                .setTitle("Delete Location")
+                .setMessage("Do you want to delete the location named '${marker.title}'?")
+                .setPositiveButton("Yes") { _, _ ->
                     viewModel.deleteSafeLocation(locationId,
                         onSuccess = {
-                            Toast.makeText(requireContext(), "Konum silindi ✅", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Location deleted ✅", Toast.LENGTH_SHORT).show()
                             loadSafeLocations()
                         },
                         onError = {
                             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                         })
                 }
-                .setNegativeButton("Hayır", null)
+                .setNegativeButton("No", null)
                 .show()
         }
 

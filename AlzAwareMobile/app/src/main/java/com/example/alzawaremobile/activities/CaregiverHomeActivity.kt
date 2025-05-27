@@ -9,13 +9,18 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.alzawaremobile.R
 import com.example.alzawaremobile.models.GeofenceRequest
 import com.example.alzawaremobile.models.User
@@ -23,11 +28,20 @@ import com.example.alzawaremobile.utils.TokenManager
 import com.example.alzawaremobile.viewmodels.CaregiverPatientViewModel
 import com.example.alzawaremobile.viewmodels.GeofenceViewModel
 import com.example.alzawaremobile.viewmodels.SafeLocationViewModel
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.*
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Circle
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 
 class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private val caregiverPatientViewModel: CaregiverPatientViewModel by viewModels()
@@ -53,7 +67,6 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_caregiver_home)
 
-        // UI tanımları ve listenerlar...
         caregiverId = TokenManager.getUserId(this)
 
         settingsButton = findViewById(R.id.settingsButton)
@@ -66,7 +79,7 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         btnSearchAddress.setOnClickListener {
             val query = etSearchAddress.text.toString()
             if (query.isBlank()) {
-                Toast.makeText(this, "Lütfen bir adres girin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter an address", Toast.LENGTH_SHORT).show()
             } else {
                 searchAddress(query)
             }
@@ -104,28 +117,25 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         geofencingClient = LocationServices.getGeofencingClient(this)
 
-        // onCreate içinde:
         val btnSetGeofence = findViewById<Button>(R.id.btnSetGeofence)
         val btnSaveGeofence = findViewById<Button>(R.id.btnSaveGeofence)
         val etRadius = findViewById<EditText>(R.id.etRadius)
 
-    // Sadece daireyi çizer
         btnSetGeofence.setOnClickListener {
             val radius = etRadius.text.toString().toFloatOrNull()
             if (geofenceLocation == null) {
-                Toast.makeText(this, "Lütfen bir konum seçin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please select a location", Toast.LENGTH_SHORT).show()
             } else if (radius == null || radius <= 0) {
-                Toast.makeText(this, "Geçerli bir yarıçap girin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter a valid radius", Toast.LENGTH_SHORT).show()
             } else {
                 updateGeofenceCircle(geofenceLocation!!, radius)
             }
         }
 
-    // Asıl geofence’i backend’e kaydeder ve sistemde aktive eder
         btnSaveGeofence.setOnClickListener {
             val radius = etRadius.text.toString().toFloatOrNull()
             if (geofenceLocation == null || radius == null || radius <= 0) {
-                Toast.makeText(this, "Önce bir konum ve geçerli yarıçap belirleyin", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please select a location and enter a valid radius", Toast.LENGTH_SHORT).show()
             } else {
                 setGeofence(geofenceLocation!!, radius)
                 saveGeofenceToBackend(geofenceLocation!!, radius.toDouble())
@@ -139,50 +149,47 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             map.animateCamera(CameraUpdateFactory.zoomOut())
         }
     }
+
     private fun searchAddress(query: String) {
         val geocoder = Geocoder(this)
         try {
             val results = geocoder.getFromLocationName(query, 1)
             if (results.isNullOrEmpty()) {
-                Toast.makeText(this, "Adres bulunamadı", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Address not found", Toast.LENGTH_SHORT).show()
                 return
             }
 
             val result = results[0]
             val latLng = LatLng(result.latitude, result.longitude)
             geofenceLocation = latLng
-
-            // Önceki marker'ı kaldır
             customSelectionMarker?.remove()
-
-            // Yeni marker ekle
             customSelectionMarker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title("Arama Sonucu")
+                    .title("Search Result")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
             )
             customSelectionMarker?.showInfoWindow()
-
-            // Haritayı konuma yakınlaştır
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
-
         } catch (e: Exception) {
-            Toast.makeText(this, "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun toggleAddPatientButtonVisibility() {
         addPatientButton.visibility = if (addPatientButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
+
     private fun toggleLogoutButtonVisibility() {
         logoutButton.visibility = if (logoutButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
+
     private fun toggleViewPatientsButtonVisibility() {
         viewPatientsButton.visibility = if (viewPatientsButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
+
     private fun showAddPatientDialog() {
-        val input = android.widget.EditText(this)
+        val input = EditText(this)
         input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
 
         val dialog = AlertDialog.Builder(this)
@@ -222,50 +229,38 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        // 🔧 Kullanıcı dostu harita ayarları
-        map.uiSettings.isZoomControlsEnabled = true      // + / - butonları
-        map.uiSettings.isZoomGesturesEnabled = true      // pinch-to-zoom
-        map.uiSettings.isScrollGesturesEnabled = true    // sürükleme
-        map.uiSettings.isRotateGesturesEnabled = true    // iki parmakla döndürme
+        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isZoomGesturesEnabled = true
+        map.uiSettings.isScrollGesturesEnabled = true
+        map.uiSettings.isRotateGesturesEnabled = true
         map.uiSettings.isTiltGesturesEnabled = true
-        // Hasta yakını haritada rastgele bir noktaya tıkladığında marker ekle
+
         map.setOnMapClickListener { latLng ->
-            // Yeni seçilen konumu kaydet
             geofenceLocation = latLng
-
-            // Varsa eski marker'ları kaldır (sadece geofence için olanlar)
             customSelectionMarker?.remove()
-
-            // Yeni marker koy
             customSelectionMarker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title("Seçilen Konum")
+                    .title("Selected Location")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
-
             customSelectionMarker?.showInfoWindow()
-
-            // Eski çemberi kaldır (setGeofence'e tıklanırsa yeniden çizilecek)
             geofenceCircle?.remove()
         }
 
-        // Safe Location markerlarına tıklama
         map.setOnMarkerClickListener { marker ->
             val location = marker.tag
             if (location != null) {
                 geofenceLocation = marker.position
-                Toast.makeText(this, "Konum seçildi: ${marker.title}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Location selected: ${marker.title}", Toast.LENGTH_SHORT).show()
                 marker.showInfoWindow()
             }
             true
         }
-
     }
 
     private fun updateGeofenceCircle(center: LatLng, radius: Float) {
         geofenceCircle?.remove()
-
         geofenceCircle = map.addCircle(
             CircleOptions()
                 .center(center)
@@ -275,7 +270,6 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 .strokeWidth(4f)
         )
 
-        // 🔍 Çizilen daireye zoom yap
         val zoomLevel = when {
             radius < 100 -> 18f
             radius < 200 -> 17f
@@ -287,11 +281,8 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(center, zoomLevel))
     }
 
-
-
     @SuppressLint("MissingPermission")
     private fun setGeofence(location: LatLng, radius: Float) {
-        // Update the circle with the actual radius
         if (!hasLocationPermissions()) {
             Toast.makeText(this, "Location permissions are not granted", Toast.LENGTH_SHORT).show()
             return
@@ -299,9 +290,9 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         updateGeofenceCircle(location, radius)
 
         val geofence = Geofence.Builder()
-            .setRequestId("GEOFENCE_ID") // Unique ID for the geofence
+            .setRequestId("GEOFENCE_ID")
             .setCircularRegion(location.latitude, location.longitude, radius)
-            .setExpirationDuration(Geofence.NEVER_EXPIRE) // Geofence will not expire
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
             .build()
 
@@ -325,7 +316,6 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun requestLocationPermissions() {
         val permissions = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             permissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         }
@@ -334,12 +324,12 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         if (shouldShowRationale) {
             AlertDialog.Builder(this)
-                .setTitle("Konum İzni Gerekli")
-                .setMessage("Uygulamanın hasta takibi ve geofence özelliğini kullanabilmesi için konum izinlerine ihtiyacı var.")
-                .setPositiveButton("İzin Ver") { _, _ ->
+                .setTitle("Location Permission Required")
+                .setMessage("The app requires location permissions to enable geofence and patient tracking features.")
+                .setPositiveButton("Allow") { _, _ ->
                     ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
                 }
-                .setNegativeButton("İptal", null)
+                .setNegativeButton("Cancel", null)
                 .show()
         } else {
             ActivityCompat.requestPermissions(this, permissions.toTypedArray(), PERMISSION_REQUEST_CODE)
@@ -354,83 +344,83 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            var allGranted = true
-
-            for (result in grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    allGranted = false
-                    break
-                }
-            }
+            val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
 
             if (allGranted) {
-                Toast.makeText(this, "İzinler başarıyla verildi ✅", Toast.LENGTH_SHORT).show()
-                // Harita veya geofence işlemleri başlatılabilir
+                Toast.makeText(this, "Permissions granted successfully ✅", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "İzin verilmedi ❌", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Permissions were not granted ❌", Toast.LENGTH_LONG).show()
 
                 AlertDialog.Builder(this)
-                    .setTitle("İzin Gerekli")
-                    .setMessage("Geofence özelliğini kullanabilmek için konum izni verilmelidir. Ayarlara gitmek ister misiniz?")
-                    .setPositiveButton("Ayarlar") { _, _ ->
+                    .setTitle("Permission Required")
+                    .setMessage("To use geofence features, location permissions must be granted. Would you like to go to settings?")
+                    .setPositiveButton("Settings") { _, _ ->
                         val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         val uri = android.net.Uri.fromParts("package", packageName, null)
                         intent.data = uri
                         startActivity(intent)
                     }
-                    .setNegativeButton("İptal", null)
+                    .setNegativeButton("Cancel", null)
                     .show()
             }
         }
     }
 
-
     private fun getSelectedPatientId(): Long {
         val spinner = findViewById<Spinner>(R.id.spinnerPatients)
         val selectedIndex = spinner.selectedItemPosition
         return if (selectedIndex in patients.indices) {
-            patients[selectedIndex].id // Get the patient ID from the cached list
+            patients[selectedIndex].id
         } else {
-            -1L // Invalid ID if the selection is out of bounds
+            -1L
         }
     }
 
     private fun saveGeofenceToBackend(location: LatLng, radius: Double) {
         val patientId = getSelectedPatientId()
 
-        // Validate patient ID
         if (patientId <= 0) {
             Toast.makeText(this, "Invalid patient ID. Please select a valid patient.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Validate location coordinates
         if (location.latitude.isNaN() || location.longitude.isNaN()) {
             Toast.makeText(this, "Invalid geofence location coordinates.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Validate radius
         if (radius <= 0) {
             Toast.makeText(this, "Invalid radius. Please enter a positive number.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Create the request
         val geofenceRequest = GeofenceRequest(
             patientId = patientId,
             latitude = location.latitude,
             longitude = location.longitude,
             radius = radius,
-            name = "Geofence for Patient $patientId",
+            name = "Geofence for Patient $patientId"
         )
 
-        // Log the request for debugging
         Log.d("Geofence", "Request: $geofenceRequest")
 
-        // Save the geofence
-        geofenceViewModel.saveGeofenceDetails(geofenceRequest.latitude, geofenceRequest.longitude, geofenceRequest.radius, geofenceRequest.name, geofenceRequest.patientId)
+        // ✅ BAŞARI ve HATA mesajları ekleniyor:
+        geofenceViewModel.saveGeofenceDetails(
+            geofenceRequest.latitude,
+            geofenceRequest.longitude,
+            geofenceRequest.radius,
+            geofenceRequest.name,
+            geofenceRequest.patientId,
+            onSuccess = {
+                Toast.makeText(this, "Geofence saved to backend successfully ✅", Toast.LENGTH_SHORT).show()
+            },
+            onError = {
+                Toast.makeText(this, "Failed to save geofence ❌: $it", Toast.LENGTH_LONG).show()
+            }
+        )
     }
+
+
     private fun setupPatientDropdown() {
         val spinner = findViewById<Spinner>(R.id.spinnerPatients)
         caregiverPatientViewModel.getPatientsByCaregiver(
@@ -454,7 +444,7 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             },
             onError = {
-                Toast.makeText(this, "Hasta listesi yüklenemedi", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to load patient list", Toast.LENGTH_SHORT).show()
             }
         )
     }
@@ -479,13 +469,8 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             },
             onError = {
-                Toast.makeText(this, "Konumlar alınamadı", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to load locations", Toast.LENGTH_SHORT).show()
             }
         )
     }
-
-
-
-
-
 }

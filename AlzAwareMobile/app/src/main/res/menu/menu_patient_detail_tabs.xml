@@ -1,11 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_add_med"
-        android:title="İlaç Ekle"/>
 
     <item
         android:id="@+id/nav_view_meds"
-        android:title="İlaçları Gör"/>
+        android:title="Medication Assign"/>
 
     <item
         android:id="@+id/nav_safe_locations"
@@ -13,5 +10,5 @@
 
     <item
         android:id="@+id/nav_location"
-        android:title="Konum"/>
+        android:title="Patient Location"/>
 </menu>

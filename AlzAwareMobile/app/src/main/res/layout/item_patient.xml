@@ -26,7 +26,7 @@
             android:id="@+id/patientNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hasta Adı"
+            android:text="Patient Name"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#37474F" />

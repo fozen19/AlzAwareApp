@@ -5,9 +5,12 @@
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardBackgroundColor="@android:color/holo_green_light"
-    app:cardCornerRadius="16dp">
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="#F0FAFF"
+    app:strokeColor="#29B6F6"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,58 +18,60 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Başlık ve Menü -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="1dp">
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/drug_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:layout_gravity="center_vertical"/>
+                android:text="Medication Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#0277BD" />
 
             <Button
                 android:id="@+id/button_menu"
-                style="?attr/materialIconButtonStyle"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/more_vert_24px"
-                app:iconSize="24dp"
-                android:layout_gravity="center_vertical"/>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Edit"
+                android:textSize="20sp"
+                android:textColor="#0277BD"
+                android:contentDescription="Menu" />
         </LinearLayout>
 
+        <!-- Detaylar -->
         <TextView
             android:id="@+id/daysTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text=""
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:text="Frequency: Every Day"
+            android:textSize="14sp"
+            android:textColor="#616161" />
 
         <TextView
             android:id="@+id/dayPartsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text=""
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?android:attr/textColorSecondary"/>
+            android:layout_marginTop="4dp"
+            android:text="Time: Morning Afternoon Evening"
+            android:textSize="14sp"
+            android:textColor="#616161" />
 
         <TextView
             android:id="@+id/usageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text=""
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?android:attr/textColorSecondary"/>
-
+            android:layout_marginTop="4dp"
+            android:text="Usage: Before Meal"
+            android:textSize="14sp"
+            android:textColor="#616161" />
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView>

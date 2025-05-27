@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/medicineName"
-        android:hint="İlaç İsmi"
+        android:hint="Medication Name"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="Her Gün"
+        android:text="Everyday"
         android:textSize="24sp"
         android:padding="2dp" />
 
@@ -45,7 +45,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:padding="8dp"
-            android:text="Sabah"
+            android:text="Morning"
             />
         <Button
             style="?attr/materialButtonOutlinedStyle"
@@ -57,7 +57,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:padding="8dp"
-            android:text="Öğle"
+            android:text="Afternoon"
             />
         <Button
             style="?attr/materialButtonOutlinedStyle"
@@ -69,7 +69,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:padding="8dp"
-            android:text="Akşam"
+            android:text="Evening"
             />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -90,7 +90,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:padding="8dp"
-            android:text="Aç Karnına"
+            android:text="On an Empty Stomach"
             />
         <Button
             style="?attr/materialButtonOutlinedStyle"
@@ -102,13 +102,13 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:padding="8dp"
-            android:text="Tok Karnına"
+            android:text="On a Full Stomach"
             />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <EditText
         android:id="@+id/medicine_count"
-        android:hint="Kapsül Sayısı"
+        android:hint="Number of Capsule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"

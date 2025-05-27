@@ -17,8 +17,8 @@ class CaregiverSignupActivity : AppCompatActivity() {
         binding = ActivityCaregiverSignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Başlığı dinamik ayarlayalım
-        binding.tvSignupTitle.text = "Bakıcı Kayıt"
+        // Dynamically set the title
+        binding.tvSignupTitle.text = "Caregiver Signup"
 
         binding.btnSignup.setOnClickListener {
             val username = binding.etUserName.text.toString()
@@ -28,9 +28,9 @@ class CaregiverSignupActivity : AppCompatActivity() {
             val lastName = binding.etLastName.text.toString()
             val phoneNumber = binding.etPhoneNumber.text.toString()
 
-            // 🎯 Boş alan kontrolü (minimum)
+            // 🎯 Minimal required field check
             if (username.isBlank() || email.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Lütfen tüm zorunlu alanları doldurun.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

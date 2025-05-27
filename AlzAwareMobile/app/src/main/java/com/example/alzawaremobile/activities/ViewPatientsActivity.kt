@@ -28,18 +28,18 @@ class ViewPatientsActivity : AppCompatActivity() {
         backButton = findViewById(R.id.backButton)
 
         val caregiverId = TokenManager.getUserId(this)
-        titleTextView.text = "Yükleniyor..."
+        titleTextView.text = "Loading..."
 
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         viewModel.getPatientsByCaregiver(
             caregiverId = caregiverId,
             onSuccess = { patients ->
-                titleTextView.text = "👥 Atanmış Hastalar (${patients.size})"
+                titleTextView.text = "👥 Assigned Patients (${patients.size})"
                 recyclerView.adapter = PatientAdapter(this, patients)
             },
             onError = {
-                titleTextView.text = "Hastalar yüklenemedi ❌"
+                titleTextView.text = "Failed to load patients ❌"
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         )

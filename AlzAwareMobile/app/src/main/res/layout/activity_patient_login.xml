@@ -13,7 +13,7 @@
         <!-- Başlık -->
         <TextView
             android:id="@+id/tvLoginTitle"
-            android:text="Hasta Girişi"
+            android:text="Patient Login"
             android:textSize="28sp"
             android:textStyle="bold"
             android:layout_marginBottom="32dp"
@@ -35,7 +35,7 @@
         <!-- Şifre -->
         <EditText
             android:id="@+id/etPassword"
-            android:hint="Şifre"
+            android:hint="Password"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         <!-- Giriş Yap Butonu -->
         <Button
             android:id="@+id/btnLogin"
-            android:text="Giriş Yap"
+            android:text="LOGIN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/holo_blue_light"
@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/tvGoToSignup"
-            android:text="Hesabın yok mu? Kayıt Ol"
+            android:text="Don't you have an account? Sign up"
             android:textSize="14sp"
             android:textColor="@android:color/holo_blue_dark"
             android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         <!-- Rol Seçimine Dön Linki -->
         <TextView
             android:id="@+id/tvGoToRoleSelection"
-            android:text="← Rol seçimine dön"
+            android:text="← Get back to the role selection"
             android:textSize="14sp"
             android:textColor="@android:color/holo_blue_dark"
             android:layout_width="wrap_content"

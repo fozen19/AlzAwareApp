@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -27,28 +28,15 @@ class MedicineAdapter(
     override fun onBindViewHolder(holder: MedicineViewHolder, position: Int) {
         val med = medicines[position]
         holder.nameTextView.text = med.name
-        holder.daysTextView.text = "Her Gün"
+        holder.daysTextView.text = "Frequency: Every Day"
 
-        val dayPartsTextbuilder = StringBuilder()
-        when (med.inMorning) {
-            1 ->  dayPartsTextbuilder.append("Sabah ")
-            0 -> dayPartsTextbuilder.append("")
-            else -> ""
-        }
-        when (med.inAfternoon) {
-            1 ->  dayPartsTextbuilder.append("Öğle ")
-            0 -> dayPartsTextbuilder.append("")
-            else -> ""
-        }
-        when (med.inEvening) {
-            1 ->  dayPartsTextbuilder.append("Akşam")
-            0 -> dayPartsTextbuilder.append("")
-            else -> ""
-        }
+        val dayParts = mutableListOf<String>()
+        if (med.inMorning == 1) dayParts.add("Morning")
+        if (med.inAfternoon == 1) dayParts.add("Afternoon")
+        if (med.inEvening == 1) dayParts.add("Evening")
+        holder.dayPartsTextView.text = "Time: ${dayParts.joinToString(" ")}"
 
-        holder.dayPartsTextView.text = dayPartsTextbuilder.toString()
-
-        holder.usageTextView.text = if (med.usage == 1) "Tok Karnına" else "Aç Karnına"
+        holder.usageTextView.text = "Usage: " + if (med.usage == 1) "After Meal" else "Before Meal"
 
         holder.menuButton.setOnClickListener { anchor ->
             PopupMenu(anchor.context, anchor).apply {
@@ -72,10 +60,10 @@ class MedicineAdapter(
     }
 
     class MedicineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTextView: TextView    = itemView.findViewById(R.id.drug_name)
-        val daysTextView: TextView    = itemView.findViewById(R.id.daysTextView)
-        val dayPartsTextView: TextView= itemView.findViewById(R.id.dayPartsTextView)
-        val usageTextView: TextView   = itemView.findViewById(R.id.usageTextView)
-        val menuButton: Button        = itemView.findViewById(R.id.button_menu)
+        val nameTextView: TextView = itemView.findViewById(R.id.drug_name)
+        val daysTextView: TextView = itemView.findViewById(R.id.daysTextView)
+        val dayPartsTextView: TextView = itemView.findViewById(R.id.dayPartsTextView)
+        val usageTextView: TextView = itemView.findViewById(R.id.usageTextView)
+        val menuButton: Button = itemView.findViewById(R.id.button_menu)
     }
 }

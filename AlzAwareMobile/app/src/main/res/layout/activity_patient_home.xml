@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/tvWelcome"
-        android:text="Hoş geldiniz, Hasta!"
+        android:text="Welcome! Patient"
         android:textSize="24sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

@@ -30,7 +30,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="48dp"
-                    android:hint="Adres ara"
+                    android:hint="Search Address"
                     android:padding="12dp"
                     android:layout_marginEnd="8dp"
                     android:background="@android:drawable/edit_text"
@@ -60,7 +60,7 @@
                 android:id="@+id/etLocationName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Konum İsmi Girin"
+                android:hint="Location Name"
                 android:padding="12dp"
                 android:layout_marginBottom="16dp"
                 android:background="@android:drawable/edit_text" />
@@ -70,7 +70,7 @@
                 android:id="@+id/btnSaveLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Konumu Kaydet"
+                android:text="Save Location"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@android:color/holo_blue_dark"
                 android:padding="12dp" />

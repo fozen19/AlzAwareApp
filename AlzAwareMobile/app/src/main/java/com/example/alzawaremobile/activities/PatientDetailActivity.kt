@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.alzawaremobile.R
-import com.example.alzawaremobile.fragments.AddMedicationFragment
 import com.example.alzawaremobile.fragments.SafeLocationFragment
 import com.example.alzawaremobile.fragments.ViewLocationFragment
 import com.example.alzawaremobile.fragments.ViewMedicationsFragment
@@ -25,15 +24,12 @@ class PatientDetailActivity : AppCompatActivity() {
 
         // İlk açıldığında gösterilecek fragment
         if (savedInstanceState == null) {
-            loadFragment(AddMedicationFragment())
+            loadFragment(ViewMedicationsFragment())
         }
 
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_add_med -> {
-                    loadFragment(AddMedicationFragment())
-                    true
-                }
+
                 R.id.nav_view_meds -> {
                     loadFragment(ViewMedicationsFragment())
                     true

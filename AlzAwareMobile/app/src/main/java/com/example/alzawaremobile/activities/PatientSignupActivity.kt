@@ -17,8 +17,8 @@ class PatientSignupActivity : AppCompatActivity() {
         binding = ActivityPatientSignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Başlık dinamik ayarlansın
-        binding.tvSignupTitle.text = "Hasta Kayıt"
+        // Set dynamic title
+        binding.tvSignupTitle.text = "Patient Signup"
 
         binding.btnSignup.setOnClickListener {
             val username = binding.etName.text.toString()
@@ -28,9 +28,9 @@ class PatientSignupActivity : AppCompatActivity() {
             val lastName = binding.etLastName.text.toString()
             val phoneNumber = binding.etPhoneNumber.text.toString()
 
-            // 🎯 Boş alan kontrolü
+            // 🎯 Empty field check
             if (username.isBlank() || email.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Lütfen tüm zorunlu alanları doldurun.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
