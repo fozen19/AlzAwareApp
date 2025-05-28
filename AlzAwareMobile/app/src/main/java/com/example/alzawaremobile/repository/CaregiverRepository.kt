@@ -1,6 +1,5 @@
 package com.example.alzawaremobile.repository
 
-import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
 import com.example.alzawaremobile.models.MessageResponse
 import com.example.alzawaremobile.models.User
 import com.example.alzawaremobile.network.ApiClient
@@ -9,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CaregiverPatientRepository {
+class CaregiverRepository {
 
     private val apiService: ApiService = ApiClient.createService(ApiService::class.java)
 
@@ -31,32 +30,18 @@ class CaregiverPatientRepository {
         }
     }
 
-    fun assignPatientToCaregiver(
-        request: CaregiverPatientMatchRequest,
+    fun getCaregiverProfile(
+        caregiverId: Long,
+        callback: (Result<User>) -> Unit
+    ) {
+        apiService.getCaregiverProfile(caregiverId).enqueue(callbackAdapter(callback))
+    }
+
+    fun updateCaregiverProfile(
+        caregiverId: Long,
+        updatedUser: User,
         callback: (Result<MessageResponse>) -> Unit
     ) {
-        apiService.assignPatientToCaregiver(request).enqueue(callbackAdapter(callback))
+        apiService.updateCaregiverProfile(caregiverId, updatedUser).enqueue(callbackAdapter(callback))
     }
-
-    fun getPatientsByCaregiver(caregiverId: Long, callback: (Result<List<User>>) -> Unit) {
-        apiService.getPatientsByCaregiver(caregiverId).enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                if (response.isSuccessful) {
-                    response.body()?.let { callback(Result.success(it)) }
-                        ?: callback(Result.failure(Exception("Boş veri döndü")))
-                } else {
-                    callback(Result.failure(Exception("Kod: ${response.code()}")))
-                }
-            }
-
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                callback(Result.failure(t))
-            }
-        })
-    }
-
-
-
-
-
 }

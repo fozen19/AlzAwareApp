@@ -54,6 +54,8 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var addPatientButton: Button
     private lateinit var logoutButton: Button
     private lateinit var viewPatientsButton: Button
+    private lateinit var profileButton: Button
+
     private lateinit var map: GoogleMap
     private lateinit var geofencingClient: GeofencingClient
     private var customSelectionMarker: Marker? = null
@@ -76,6 +78,10 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         addPatientButton = findViewById(R.id.addPatientButton)
         logoutButton = findViewById(R.id.logoutButton)
         viewPatientsButton = findViewById(R.id.viewPatientsButton)
+        profileButton = findViewById<Button>(R.id.profileButton)
+        profileButton.setOnClickListener {
+            showCaregiverProfile()
+        }
         val etSearchAddress = findViewById<EditText>(R.id.etSearchAddress)
         val btnSearchAddress = findViewById<Button>(R.id.btnSearchAddress)
 
@@ -92,6 +98,7 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             toggleAddPatientButtonVisibility()
             toggleLogoutButtonVisibility()
             toggleViewPatientsButtonVisibility()
+            toggleProfileButtonVisibility()
         }
 
         addPatientButton.setOnClickListener {
@@ -190,6 +197,12 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun toggleViewPatientsButtonVisibility() {
         viewPatientsButton.visibility = if (viewPatientsButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
+
+    private fun toggleProfileButtonVisibility() {
+        profileButton.visibility = if (profileButton.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+
+
 
     private fun showAddPatientDialog() {
         val input = EditText(this)
@@ -536,6 +549,12 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         )
     }
+    private fun showCaregiverProfile() {
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra("CAREGIVER_ID", caregiverId) // caregiverId’yi gönderiyoruz
+        startActivity(intent)
+    }
+
 
 
 }

@@ -42,6 +42,7 @@
         <activity android:name=".activities.CaregiverHomeActivity" android:exported="true"/>
         <activity android:name=".activities.ViewPatientsActivity"/>
         <activity android:name=".activities.PatientDetailActivity"/>
+        <activity android:name=".activities.ProfileActivity" />
 
     </application>
 

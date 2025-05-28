@@ -86,6 +86,13 @@ interface ApiService {
     @GET("api/geofence/{patientId}")
     fun getGeofenceByPatient(@Path("patientId") patientId: Long): Call<GeofenceDTO>
 
+    // 👤 Caregiver profile
+    @GET("api/caregivers/{id}")
+    fun getCaregiverProfile(@Path("id") caregiverId: Long): Call<User>
+
+    @PUT("api/caregivers/{id}")
+    fun updateCaregiverProfile(@Path("id") caregiverId: Long, @Body updatedUser: User): Call<MessageResponse>
+
 
 }
 
