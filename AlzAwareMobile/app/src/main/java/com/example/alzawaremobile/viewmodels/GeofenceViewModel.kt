@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.alzawaremobile.models.GeofenceDTO
 import com.example.alzawaremobile.models.GeofenceRequest
 import com.example.alzawaremobile.models.MessageResponse
 import com.example.alzawaremobile.repository.GeofenceRepository
@@ -62,6 +63,16 @@ class GeofenceViewModel(application: Application) : AndroidViewModel(application
                 Log.e("GeofenceViewModel", "Failed to save geofence: ${exception.message}", exception)
                 onError(exception.localizedMessage ?: "Unknown error occurred")
             }
+        }
+    }
+    fun getGeofenceByPatient(
+        patientId: Long,
+        onSuccess: (GeofenceDTO) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        repository.getGeofenceByPatient(patientId) { result ->
+            result.onSuccess { onSuccess(it) }
+                .onFailure { onError(it.message ?: "Geofence yüklenemedi") }
         }
     }
 

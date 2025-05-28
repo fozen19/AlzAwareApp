@@ -2,6 +2,7 @@ package com.example.alzawaremobile.network
 
 import com.example.alzawaremobile.models.AuthResponse
 import com.example.alzawaremobile.models.CaregiverPatientMatchRequest
+import com.example.alzawaremobile.models.GeofenceDTO
 import com.example.alzawaremobile.models.GeofenceRequest
 import com.example.alzawaremobile.models.LoginRequest
 import com.example.alzawaremobile.models.MessageResponse
@@ -11,6 +12,7 @@ import com.example.alzawaremobile.models.SignupRequest
 import com.example.alzawaremobile.models.User
 import com.example.alzawaremobile.models.Medicine
 import com.example.alzawaremobile.models.LocationDto
+import com.example.alzawaremobile.models.PatientLocationResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -71,4 +73,20 @@ interface ApiService {
 
     @GET("api/safe-location/check/{patientId}")
     fun checkPatientLocation(@Path("patientId") patientId: Long): Call<Boolean>
+    @POST("api/patients/{id}/location")
+    fun updatePatientLocation(
+        @Path("id") patientId: Long,
+        @Body location: LocationDto
+    ): Call<MessageResponse>
+
+    // ✅ EKLENMELİ: Hasta son konumu alınabilsin
+    @GET("api/patients/{id}/location")
+    fun getPatientLatestLocation(@Path("id") patientId: Long): Call<PatientLocationResponse>
+
+    @GET("api/geofence/{patientId}")
+    fun getGeofenceByPatient(@Path("patientId") patientId: Long): Call<GeofenceDTO>
+
+
 }
+
+

@@ -1,6 +1,7 @@
 package com.example.alzawaremobile.repository
 
 import android.util.Log
+import com.example.alzawaremobile.models.GeofenceDTO
 import com.example.alzawaremobile.models.GeofenceRequest
 import com.example.alzawaremobile.models.MessageResponse
 import com.example.alzawaremobile.network.ApiClient
@@ -52,4 +53,26 @@ class GeofenceRepository {
             }
         })
     }
+
+    fun getGeofenceByPatient(
+        patientId: Long,
+        callback: (Result<GeofenceDTO>) -> Unit
+    ) {
+        apiService.getGeofenceByPatient(patientId).enqueue(object : Callback<GeofenceDTO> {
+            override fun onResponse(call: Call<GeofenceDTO>, response: Response<GeofenceDTO>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        callback(Result.success(it))
+                    } ?: callback(Result.failure(Exception("Empty response")))
+                } else {
+                    callback(Result.failure(Exception("Error: ${response.code()}")))
+                }
+            }
+
+            override fun onFailure(call: Call<GeofenceDTO>, t: Throwable) {
+                callback(Result.failure(t))
+            }
+        })
+    }
+
 }

@@ -27,6 +27,7 @@ import com.example.alzawaremobile.models.User
 import com.example.alzawaremobile.utils.TokenManager
 import com.example.alzawaremobile.viewmodels.CaregiverPatientViewModel
 import com.example.alzawaremobile.viewmodels.GeofenceViewModel
+import com.example.alzawaremobile.viewmodels.PatientLocationViewModel
 import com.example.alzawaremobile.viewmodels.SafeLocationViewModel
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
@@ -47,6 +48,7 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private val caregiverPatientViewModel: CaregiverPatientViewModel by viewModels()
     private val geofenceViewModel: GeofenceViewModel by viewModels()
     private val safeLocationViewModel: SafeLocationViewModel by viewModels()
+    private val patientLocationViewModel: PatientLocationViewModel by viewModels()
 
     private lateinit var settingsButton: ImageButton
     private lateinit var addPatientButton: Button
@@ -62,6 +64,7 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private var geofenceLocation: LatLng? = null
     private var geofenceCircle: Circle? = null
     private val safeLocationMarkers = mutableListOf<Marker>()
+    private var existingGeofenceCircle: Circle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -220,12 +223,14 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             patientId,
             onSuccess = {
                 Toast.makeText(this, "Patient assigned successfully!", Toast.LENGTH_SHORT).show()
+                setupPatientDropdown() // 🔄 dropdown'u ve hastaya ait bilgileri güncelle
             },
             onError = { error ->
                 Toast.makeText(this, "Failed: $error", Toast.LENGTH_SHORT).show()
             }
         )
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
@@ -249,15 +254,25 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         map.setOnMarkerClickListener { marker ->
-            val location = marker.tag
-            if (location != null) {
-                geofenceLocation = marker.position
-                Toast.makeText(this, "Location selected: ${marker.title}", Toast.LENGTH_SHORT).show()
-                marker.showInfoWindow()
+            when (marker.tag) {
+                "latest_patient_location" -> {
+                    geofenceLocation = marker.position
+                    Toast.makeText(this, "Son konum seçildi: ${marker.title}", Toast.LENGTH_SHORT).show()
+                    marker.showInfoWindow()
+                }
+                else -> {
+                    val location = marker.tag
+                    if (location != null) {
+                        geofenceLocation = marker.position
+                        Toast.makeText(this, "Konum seçildi: ${marker.title}", Toast.LENGTH_SHORT).show()
+                        marker.showInfoWindow()
+                    }
+                }
             }
             true
         }
     }
+
 
     private fun updateGeofenceCircle(center: LatLng, radius: Float) {
         geofenceCircle?.remove()
@@ -413,7 +428,8 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             geofenceRequest.patientId,
             onSuccess = {
                 Toast.makeText(this, "Geofence saved to backend successfully ✅", Toast.LENGTH_SHORT).show()
-            },
+                showExistingGeofence(patientId)
+                        },
             onError = {
                 Toast.makeText(this, "Failed to save geofence ❌: $it", Toast.LENGTH_LONG).show()
             }
@@ -438,6 +454,8 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
                     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                         val selectedPatientId = patients[position].id
                         loadSafeLocations(selectedPatientId)
+                        loadLatestPatientLocation(selectedPatientId) // 👈 EKLENDİ
+                        showExistingGeofence(selectedPatientId) // 👈 burada çağır
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -473,4 +491,51 @@ class CaregiverHomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         )
     }
+    private fun loadLatestPatientLocation(patientId: Long) {
+        patientLocationViewModel.fetchLatestPatientLocation(
+            patientId = patientId,
+            onResult = { location ->
+                if (location != null) {
+                    val latLng = LatLng(location.latitude, location.longitude)
+
+                    val marker = map.addMarker(
+                        MarkerOptions()
+                            .position(latLng)
+                            .title("Son Konum (${location.firstName} ${location.lastName})")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    )
+                    marker?.tag = "latest_patient_location" // ✅ Yeşil marker'a özel tag
+
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+                } else {
+                    Toast.makeText(this, "Son konum alınamadı", Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
+    }
+
+    private fun showExistingGeofence(patientId: Long) {
+        geofenceViewModel.getGeofenceByPatient(
+            patientId,
+            onSuccess = { geofence ->
+                val center = LatLng(geofence.latitude, geofence.longitude)
+                val radius = geofence.radius.toFloat()
+
+                existingGeofenceCircle?.remove() // önceki çemberi kaldır
+                existingGeofenceCircle = map.addCircle(
+                    CircleOptions()
+                        .center(center)
+                        .radius(radius.toDouble())
+                        .strokeColor(0xFF2196F3.toInt()) // mavi kenar
+                        .fillColor(0x442196F3.toInt())   // yarı saydam mavi iç
+                        .strokeWidth(5f)
+                )
+            },
+            onError = {
+                Toast.makeText(this, "Kayıtlı geofence bulunamadı", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+
+
 }

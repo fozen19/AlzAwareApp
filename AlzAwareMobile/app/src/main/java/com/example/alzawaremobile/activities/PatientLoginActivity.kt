@@ -17,23 +17,24 @@ class PatientLoginActivity : AppCompatActivity() {
         binding = ActivityPatientLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set dynamic title here if needed
-
         binding.btnLogin.setOnClickListener {
             val userName = binding.etUserName.text.toString()
             val password = binding.etPassword.text.toString()
 
-            // 🎯 Check for empty fields
             if (userName.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "Username and password must not be empty.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // ✅ Proceed with login for patient role
+            // 🧠 PATIENT login with ID forwarding
             viewModel.login(
-                userName, password, role = "PATIENT",
-                onSuccess = {
-                    startActivity(Intent(this, PatientHomeActivity::class.java))
+                userName,
+                password,
+                role = "PATIENT",
+                onSuccess = { userId ->
+                    val intent = Intent(this, PatientHomeActivity::class.java)
+                    intent.putExtra("patientId", userId)
+                    startActivity(intent)
                     finish()
                 },
                 onError = {
