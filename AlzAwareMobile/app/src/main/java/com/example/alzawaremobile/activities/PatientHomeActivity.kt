@@ -8,9 +8,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.Fragment
 import androidx.work.*
+import com.example.alzawaremobile.R
 import com.example.alzawaremobile.databinding.ActivityPatientHomeBinding
+import com.example.alzawaremobile.fragments.PatientProfileReadOnlyFragment
+import com.example.alzawaremobile.fragments.ViewMedicationsReadOnlyFragment
 import com.example.alzawaremobile.utils.TokenManager
 import com.example.alzawaremobile.viewmodels.PatientLocationViewModel
 import com.example.alzawaremobile.workers.PatientLocationUpdateWorker
@@ -35,51 +38,72 @@ class PatientHomeActivity : AppCompatActivity() {
             TokenManager.saveUserId(this, patientIdFromLogin)
         }
 
-        binding.tvWelcome.text = "Hoş geldiniz, Hasta!"
+        //binding.tvWelcome.text = "Hoş geldiniz, Hasta!"
 
         requestLocationPermissions()
         startLocationWorkerIfPermitted()
 
-        binding.btnSendLocation.setOnClickListener {
-            if (!hasLocationPermissions()) {
-                Toast.makeText(this, "Konum izinleri verilmedi", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+//        binding.btnSendLocation.setOnClickListener {
+//            if (!hasLocationPermissions()) {
+//                Toast.makeText(this, "Konum izinleri verilmedi", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            val patientId = TokenManager.getUserId(this)
+//            if (patientId <= 0) {
+//                Toast.makeText(this, "Hasta ID'si bulunamadı", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            lifecycleScope.launch {
+//                val locationDto = withTimeoutOrNull(10000L) {
+//                    viewModel.fetchCurrentLocation()
+//                    viewModel.locationResult.first { it != null }
+//                }
+//
+//                if (locationDto == null) {
+//                    Toast.makeText(this@PatientHomeActivity, "Konum alınamadı", Toast.LENGTH_SHORT).show()
+//                    return@launch
+//                }
+//
+//                viewModel.updatePatientLocation(
+//                    patientId,
+//                    locationDto,
+//                    onSuccess = {
+//                        Toast.makeText(this@PatientHomeActivity, "Konum gönderildi ✅", Toast.LENGTH_SHORT).show()
+//                    },
+//                    onError = {
+//                        Toast.makeText(this@PatientHomeActivity, "Gönderilemedi ❌: $it", Toast.LENGTH_SHORT).show()
+//                    }
+//                )
+//            }
+//        }
 
-            val patientId = TokenManager.getUserId(this)
-            if (patientId <= 0) {
-                Toast.makeText(this, "Hasta ID'si bulunamadı", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+        setupBottomNav()
+    }
 
-            lifecycleScope.launch {
-                try {
-                    val locationDto = withTimeoutOrNull(10000L) {
-                        viewModel.fetchCurrentLocation()
-                        viewModel.locationResult.first { it != null }
-                    }
+    private fun setupBottomNav() {
+        loadFragment(ViewMedicationsReadOnlyFragment())
 
-                    if (locationDto == null) {
-                        Toast.makeText(this@PatientHomeActivity, "Konum alınamadı", Toast.LENGTH_SHORT).show()
-                        return@launch
-                    }
-
-                    viewModel.updatePatientLocation(
-                        patientId,
-                        locationDto,
-                        onSuccess = {
-                            Toast.makeText(this@PatientHomeActivity, "Konum gönderildi ✅", Toast.LENGTH_SHORT).show()
-                        },
-                        onError = {
-                            Toast.makeText(this@PatientHomeActivity, "Gönderilemedi ❌: $it", Toast.LENGTH_SHORT).show()
-                        }
-                    )
-
-                } catch (e: Exception) {
-                    Toast.makeText(this@PatientHomeActivity, "Hata: ${e.message}", Toast.LENGTH_SHORT).show()
+        binding.bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_medications -> {
+                    loadFragment(ViewMedicationsReadOnlyFragment())
+                    true
                 }
+                R.id.nav_profile -> {
+                    loadFragment(PatientProfileReadOnlyFragment())
+                    true
+                }
+                else -> false
             }
         }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
     private fun requestLocationPermissions() {

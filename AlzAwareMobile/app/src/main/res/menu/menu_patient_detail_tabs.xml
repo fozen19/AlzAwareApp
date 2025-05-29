@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/nav_view_meds"
-        android:title="Medication Assign"/>
+        android:title="Med Assign"/>
 
     <item
         android:id="@+id/nav_safe_locations"
@@ -13,5 +13,5 @@
         android:title="Patient Location"/>
     <item
         android:id="@+id/nav_patient_profile"
-        android:title="Patient Location"/>
+        android:title="Patient Profile"/>
 </menu>

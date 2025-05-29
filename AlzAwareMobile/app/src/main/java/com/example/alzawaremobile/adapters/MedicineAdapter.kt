@@ -14,7 +14,8 @@ import com.example.alzawaremobile.models.Medicine
 class MedicineAdapter(
     private val medicines: MutableList<Medicine>,
     private val onEditClick: (Medicine) -> Unit,
-    private val onDeleteClick: (Medicine) -> Unit
+    private val onDeleteClick: (Medicine) -> Unit,
+    private val isReadOnly: Boolean = false // 🔹 yeni parametre
 ) : RecyclerView.Adapter<MedicineAdapter.MedicineViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineViewHolder {
@@ -38,23 +39,28 @@ class MedicineAdapter(
 
         holder.usageTextView.text = "Usage: " + if (med.usage == 1) "After Meal" else "Before Meal"
 
-        holder.menuButton.setOnClickListener { anchor ->
-            PopupMenu(anchor.context, anchor).apply {
-                inflate(R.menu.med_edit_delete_menu)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.edit_option -> {
-                            onEditClick(med)
-                            true
+        if (isReadOnly) {
+            holder.menuButton.visibility = View.GONE // 🔹 menüyü gizle
+        } else {
+            holder.menuButton.visibility = View.VISIBLE
+            holder.menuButton.setOnClickListener { anchor ->
+                PopupMenu(anchor.context, anchor).apply {
+                    inflate(R.menu.med_edit_delete_menu)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.edit_option -> {
+                                onEditClick(med)
+                                true
+                            }
+                            R.id.delete_option -> {
+                                onDeleteClick(med)
+                                true
+                            }
+                            else -> false
                         }
-                        R.id.delete_option -> {
-                            onDeleteClick(med)
-                            true
-                        }
-                        else -> false
                     }
+                    show()
                 }
-                show()
             }
         }
     }
@@ -67,3 +73,4 @@ class MedicineAdapter(
         val menuButton: Button = itemView.findViewById(R.id.button_menu)
     }
 }
+

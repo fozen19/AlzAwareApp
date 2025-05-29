@@ -1,23 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:text="Welcome! Patient"
-        android:textSize="24sp"
-        android:layout_marginBottom="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!-- Üst Hoşgeldin ve Lokasyon Butonu -->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/topSection"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="16dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
-    <Button
-        android:id="@+id/btnSendLocation"
-        android:text="Send Location Now"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvWelcome"-->
+<!--            android:text="Hoş geldiniz, Hasta!"-->
+<!--            android:textSize="20sp"-->
+<!--            android:layout_marginBottom="12dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btnSendLocation"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Send Location Now"-->
+<!--            android:backgroundTint="@android:color/holo_blue_light"-->
+<!--            android:textColor="@android:color/white" />-->
+<!--    </LinearLayout>-->
+
+    <!-- Fragment içeriği (Medications / Profile) -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="8dp" />
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemTextColor="@android:color/white"
+        app:itemIconTint="@android:color/white"
+        app:backgroundTint="@android:color/holo_blue_light"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/patient_bottom_nav_menu" />
 
 </LinearLayout>
