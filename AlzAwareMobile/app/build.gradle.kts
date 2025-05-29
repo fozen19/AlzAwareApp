@@ -90,6 +90,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.6.7") // Or the latest version
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.7") // Or the latest version
     implementation("androidx.fragment:fragment-ktx:1.5.7")
+    implementation(libs.play.services.cast.framework)
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.7") // Or the latest version
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7") // Or the latest version
     implementation("androidx.activity:activity-compose:1.9.0") // Or the latest version
@@ -104,4 +105,8 @@ dependencies {
     implementation(libs.material.v1110) // TabLayout için
     implementation(libs.androidx.viewpager2)       // ViewPager2 için
     implementation(libs.androidx.work.runtime.ktx)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
 }

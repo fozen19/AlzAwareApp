@@ -1,11 +1,19 @@
 package com.example.alzawaremobile.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.alzawaremobile.models.Medicine
 import com.example.alzawaremobile.repository.MedicineRepository
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.ExistingWorkPolicy
+import com.example.alzawaremobile.workers.MedicationScheduleWorker
+import com.example.alzawaremobile.utils.AlarmScheduler
+import com.example.alzawaremobile.utils.TimeSlot
+
 
 class MedicineViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -53,6 +61,17 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
             result.onSuccess {
                 _operationStatus.postValue("Medicine created successfully")
                 refreshList()
+
+                val work = OneTimeWorkRequestBuilder<MedicationScheduleWorker>().build()
+                WorkManager.getInstance(getApplication())
+                    .enqueueUniqueWork(
+                        "medScheduleWork",
+                        ExistingWorkPolicy.REPLACE,
+                        work
+                    )
+
+                Log.d("AlarmManager", "passed")
+
             }.onFailure {
                 _error.postValue(it.message ?: "Failed to create medicine")
             }
@@ -74,6 +93,17 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
             result.onSuccess {
                 _operationStatus.postValue("Medicine updated successfully")
                 refreshList()
+
+                val work = OneTimeWorkRequestBuilder<MedicationScheduleWorker>().build()
+                WorkManager.getInstance(getApplication())
+                    .enqueueUniqueWork(
+                        "medScheduleWork",
+                        ExistingWorkPolicy.REPLACE,
+                        work
+                    )
+
+                Log.d("AlarmManager", "passed")
+
             }.onFailure {
                 _error.postValue(it.message ?: "Failed to update medicine")
             }
@@ -84,7 +114,24 @@ class MedicineViewModel(application: Application) : AndroidViewModel(application
         repository.deleteMedicine(id) { result ->
             result.onSuccess {
                 _operationStatus.postValue("Medicine deleted successfully")
+
+                TimeSlot.values().forEach { slot ->
+                    val requestCode = ((id % Int.MAX_VALUE).toInt() * 3) + slot.ordinal
+                    AlarmScheduler.cancelAlarm(getApplication(), requestCode)
+                }
+
                 refreshList()
+
+                val work = OneTimeWorkRequestBuilder<MedicationScheduleWorker>().build()
+                WorkManager.getInstance(getApplication())
+                    .enqueueUniqueWork(
+                        "medScheduleWork",
+                        ExistingWorkPolicy.REPLACE,
+                        work
+                    )
+
+                Log.d("AlarmManager", "passed")
+
             }.onFailure {
                 _error.postValue(it.message ?: "Failed to delete medicine")
             }
