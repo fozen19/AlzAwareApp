@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -26,38 +27,58 @@ public class PatientLocationController {
     private PatientLocationRepository locationRepository;
 
     @PostMapping("/{id}/location")
-    public ResponseEntity<MessageResponse> updatePatientLocation(@PathVariable Long id, @RequestBody LocationRequest request) {
-        User patient = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
+    public ResponseEntity<?> updatePatientLocation(@PathVariable Long id, @RequestBody LocationRequest request) {
+        try {
+            Optional<User> optionalPatient = userRepository.findById(id);
+            if (optionalPatient.isEmpty()) {
+                return ResponseEntity.status(404).body(new MessageResponse("Patient not found"));
+            }
 
-        PatientLocation location = new PatientLocation();
-        location.setPatient(patient);
-        location.setLatitude(request.getLatitude());
-        location.setLongitude(request.getLongitude());
-        location.setTimestamp(LocalDateTime.now());
+            User patient = optionalPatient.get();
 
-        locationRepository.save(location);
+            PatientLocation location = new PatientLocation();
+            location.setPatient(patient);
+            location.setLatitude(request.getLatitude());
+            location.setLongitude(request.getLongitude());
+            location.setTimestamp(LocalDateTime.now());
 
-        return ResponseEntity.ok(new MessageResponse("Location saved successfully."));
+            locationRepository.save(location);
+
+            return ResponseEntity.ok(new MessageResponse("Location saved successfully."));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new MessageResponse("Failed to save location: " + e.getMessage()));
+        }
     }
 
     @GetMapping("/{id}/location")
-    public ResponseEntity<PatientLocationResponse> getLatestLocation(@PathVariable Long id) {
-        User patient = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
+    public ResponseEntity<?> getLatestLocation(@PathVariable Long id) {
+        try {
+            Optional<User> optionalPatient = userRepository.findById(id);
+            if (optionalPatient.isEmpty()) {
+                return ResponseEntity.status(404).body(new MessageResponse("Patient not found"));
+            }
 
-        PatientLocation location = locationRepository.findTopByPatientOrderByTimestampDesc(patient)
-                .orElseThrow(() -> new RuntimeException("No location data found"));
+            User patient = optionalPatient.get();
 
-        PatientLocationResponse response = new PatientLocationResponse(
-                patient.getId(),
-                location.getLatitude(),
-                location.getLongitude(),
-                patient.getFirstName(),
-                patient.getLastName(),
-                location.getTimestamp().toString()
-        );
+            Optional<PatientLocation> optionalLocation = locationRepository.findTopByPatientOrderByTimestampDesc(patient);
+            if (optionalLocation.isEmpty()) {
+                return ResponseEntity.status(404).body(new MessageResponse("No location data found"));
+            }
 
-        return ResponseEntity.ok(response);
+            PatientLocation location = optionalLocation.get();
+
+            PatientLocationResponse response = new PatientLocationResponse(
+                    patient.getId(),
+                    location.getLatitude(),
+                    location.getLongitude(),
+                    patient.getFirstName(),
+                    patient.getLastName(),
+                    location.getTimestamp().toString()
+            );
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(new MessageResponse("Failed to retrieve location: " + e.getMessage()));
+        }
     }
 }

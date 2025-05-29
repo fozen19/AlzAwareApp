@@ -92,6 +92,11 @@ interface ApiService {
 
     @PUT("api/caregivers/{id}")
     fun updateCaregiverProfile(@Path("id") caregiverId: Long, @Body updatedUser: User): Call<MessageResponse>
+    @GET("api/patients/{id}/profile")
+    fun getPatientProfile(@Path("id") id: Long): Call<User>
+
+    @PUT("api/patients/{id}/profile")
+    fun updatePatientProfile(@Path("id") id: Long, @Body updatedUser: User): Call<MessageResponse>
 
 
 }

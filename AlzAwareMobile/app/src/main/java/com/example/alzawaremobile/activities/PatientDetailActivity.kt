@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.alzawaremobile.R
+import com.example.alzawaremobile.fragments.PatientProfileFragment
 import com.example.alzawaremobile.fragments.SafeLocationFragment
 import com.example.alzawaremobile.fragments.ViewLocationFragment
 import com.example.alzawaremobile.fragments.ViewMedicationsFragment
@@ -40,6 +41,10 @@ class PatientDetailActivity : AppCompatActivity() {
                 }
                 R.id.nav_location -> {
                     loadFragment(ViewLocationFragment())
+                    true
+                }
+                R.id.nav_patient_profile -> {
+                    loadFragment(PatientProfileFragment())
                     true
                 }
                 else -> false

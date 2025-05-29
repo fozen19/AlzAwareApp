@@ -11,4 +11,7 @@
     <item
         android:id="@+id/nav_location"
         android:title="Patient Location"/>
+    <item
+        android:id="@+id/nav_patient_profile"
+        android:title="Patient Location"/>
 </menu>
